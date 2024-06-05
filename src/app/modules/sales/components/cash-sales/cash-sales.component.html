@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="products-section" *ngIf="!showPayment">
+    <div class="header">
+      <h1>Name</h1>
+      <h1>Quantity</h1>
+      <h1>Price</h1>
+    </div>
+    <div
+      *ngFor="let product of products"
+      (click)="onProductClick(product)"
+      class="product"
+    >
+      <h1>{{ product.name }}</h1>
+      <h1>{{ product.quantity }}</h1>
+      <h1>{{ product.price }}</h1>
+    </div>
+  </div>
+
+  <div class="selected-products-section">
+    <div class="header">
+      <h1>Name</h1>
+      <h1>Quantity</h1>
+      <h1>Discount</h1>
+      <h1>Price</h1>
+      <h1>Subtotal</h1>
+    </div>
+    <div
+      *ngFor="let product of selectedProducts; let i = index"
+      class="selected-product"
+    >
+      <h1>{{ product.name }}</h1>
+      <input
+        type="number"
+        [(ngModel)]="product.quantity"
+        class="quantity-input"
+      />
+      <input
+        type="number"
+        [(ngModel)]="product.discount"
+        class="discount-input"
+      />
+      <h1>{{ product.price }}</h1>
+      <h1>{{ calculateSubtotal(product) }}</h1>
+      <button (click)="removeSelectedProduct(i)">Remove</button>
+    </div>
+    <button *ngIf="selectedProducts.length > 0" (click)="showPayment = true">
+      Proceed to Payment
+    </button>
+  </div>
+
+  <div class="payment-section" *ngIf="showPayment">
+    <h2>Payment Methods</h2>
+    <div class="flex flex-col gap-3">
+      <label>
+        Cash:
+        <input
+          class="text-white bg-[#333] w-30 border-solid border-2 border-[#555] rounded"
+          type="number"
+          [(ngModel)]="paymentMethods.cash"
+        />
+      </label>
+      <label>
+        Mpesa:
+        <input
+          class="text-white bg-[#333] w-30 border-solid border-2 border-[#555] rounded"
+          type="number"
+          [(ngModel)]="paymentMethods.mpesa"
+        />
+      </label>
+      <label>
+        Bank:
+        <input
+          class="text-white bg-[#333] w-30 border-solid border-2 border-[#555] rounded"
+          type="number"
+          [(ngModel)]="paymentMethods.bank"
+        />
+      </label>
+    </div>
+
+    <div class="summary">
+      <div class="summary-item">
+        <span>Subtotal:</span>
+        <span>{{ calculateSubtotalTotal() }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Discount:</span>
+        <span>{{ calculateDiscountTotal() }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Tax (16%):</span>
+        <span>{{ calculateTax() }}</span>
+      </div>
+      <div class="summary-item">
+        <span>Total to Pay:</span>
+        <span>{{ calculateTotal() }}</span>
+      </div>
+    </div>
+
+    <button (click)="submitPayment()">Submit Payment</button>
+  </div>
+</div>
