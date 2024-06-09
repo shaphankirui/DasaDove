@@ -5,21 +5,21 @@ import { CategoryService } from '../../../../../shared/Services/category.service
 @Component({
   selector: 'app-show-categories',
   templateUrl: './show-categories.component.html',
-  styleUrl: './show-categories.component.scss'
+  styleUrl: './show-categories.component.scss',
 })
 export class ShowCategoriesComponent implements OnInit {
   categories: Category[] = [];
   query: string = '';
   isModalVisible: boolean = false;
   isEditModalVisible: boolean = false;
-  categoryToEdit: string = '';
+  categoryToEdit: number | null = null;
   studentIdToEdit: number | null = null;
-  @Output() categoryId = new EventEmitter<string>(); // Event emitter for edit
+  @Output() categoryId = new EventEmitter<number>(); // Event emitter for edit
 
   toggleModal() {
     this.isModalVisible = !this.isModalVisible;
   }
-  toggleEditModal(id: string) {
+  toggleEditModal(id: number) {
     this.categoryToEdit = id;
     this.isEditModalVisible = !this.isEditModalVisible;
     if (id !== null) {
@@ -48,7 +48,7 @@ export class ShowCategoriesComponent implements OnInit {
     });
   }
 
-  deleteCategory(id: string): void {
+  deleteCategory(id: number): void {
     if (confirm('Are you sure you want to delete this Category?')) {
       this.categoryService.deleteCategory(id).subscribe((res) => {
         this.getAllCategories(this.query);

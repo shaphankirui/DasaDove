@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HotToastService } from '@ngneat/hot-toast';
 import { CategoryService } from '../../../../../shared/Services/category.service';
@@ -7,19 +14,19 @@ import { Category } from '../../../../../shared/interfaces/categories';
 @Component({
   selector: 'app-update-category',
   templateUrl: './update-category.component.html',
-  styleUrl: './update-category.component.scss'
+  styleUrl: './update-category.component.scss',
 })
 export class UpdateCategoryComponent implements OnChanges {
   categoryForm: FormGroup;
   @Input() modalId: string = '';
-  @Input() categoryToEdit: string = '';
+  @Input() categoryToEdit: number | null = null;
   @Input() isModalVisible: boolean = false;
   @Output() toggleModal = new EventEmitter<void>();
 
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
-    private toast:HotToastService
+    private toast: HotToastService
   ) {
     this.categoryForm = this.fb.group({
       name: ['', Validators.required],
@@ -29,7 +36,7 @@ export class UpdateCategoryComponent implements OnChanges {
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['categoryToEdit'] && !changes['categoryToEdit'].firstChange) {
-      this.getCategoryDetails(this.categoryToEdit);
+      this.getCategoryDetails(this.categoryToEdit!);
     }
   }
 
@@ -37,7 +44,7 @@ export class UpdateCategoryComponent implements OnChanges {
     this.toggleModal.emit();
   }
 
-  getCategoryDetails(categoryId: string) {
+  getCategoryDetails(categoryId: number) {
     this.categoryService
       .getCategorybyId(categoryId)
       .subscribe((category: Category) => {
@@ -56,7 +63,7 @@ export class UpdateCategoryComponent implements OnChanges {
     }
     const categoryData = this.categoryForm.value;
     this.categoryService
-      .updateCategory(this.categoryToEdit, categoryData)
+      .updateCategory(this.categoryToEdit!, categoryData)
       .subscribe(
         (response) => {
           this.toast.success('Category Update successfully:');

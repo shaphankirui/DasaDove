@@ -7,7 +7,7 @@ import { environment } from '../Environments/environments';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
   private apiUrl: string;
@@ -18,27 +18,27 @@ export class ProductService {
     private localStorageService: LocalStorageService
   ) {
     this.savedOrg = this.localStorageService.getSavedOrgId();
-    this.apiUrl = `${environment.apiRootUrl}/organizations/${this.savedOrg}/products`;
+    this.apiUrl = `${environment.apiRootUrl}products`;
   }
   getAllProducts(): Observable<Product[]> {
     const url = `${this.apiUrl}`;
     return this.http.get<Product[]>(url);
   }
-  
+
   addProduct(product: Product): Observable<Product> {
     const url = `${this.apiUrl}`;
     return this.http.post<Product>(url, product);
   }
-  getProductbyId(id: string): Observable<Product> {
+  getProductbyId(id: number): Observable<Product> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Product>(url);
   }
 
-  updateProduct(id:string, data:any): Observable<any> {
+  updateProduct(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  deleteProduct(id:string): Observable<any> {
+  deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

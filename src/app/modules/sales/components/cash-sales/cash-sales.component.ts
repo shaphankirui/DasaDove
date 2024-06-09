@@ -1,13 +1,6 @@
 import { Component } from '@angular/core';
-
-interface Product {
-  id: number;
-  name: string;
-  quantity: number;
-  price: string;
-  discount?: number;
-  pax?: number;
-}
+import { ProductService } from '../../../../shared/Services/product.service';
+import { Product } from '../../../../shared/interfaces/products';
 
 interface PaymentMethods {
   cash: number;
@@ -21,12 +14,11 @@ interface PaymentMethods {
   styleUrls: ['./cash-sales.component.scss'], // Fixed styleUrl typo
 })
 export class CashSalesComponent {
-  products: Product[] = [
-    { id: 1, name: 'product1', quantity: 1, price: '100' },
-    { id: 2, name: 'product2', quantity: 1, price: '100' },
-    { id: 3, name: 'product3', quantity: 1, price: '100' },
-    { id: 4, name: 'product4', quantity: 1, price: '100' },
-  ];
+  products: Product[] = [];
+  constructor(private productService: ProductService) {}
+  ngOnInit() {
+    this.getAllProducts();
+  }
 
   selectedProducts: Product[] = [];
   productTotals: number[] = []; // Initialize productTotals as an empty array
@@ -39,6 +31,19 @@ export class CashSalesComponent {
 
   showPayment: boolean = false; // State to show/hide payment section
 
+  getAllProducts(searchQuery?: string): void {
+    this.productService.getAllProducts().subscribe((products) => {
+      if (searchQuery && searchQuery.trim() !== '') {
+        this.products = products.filter((product) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      } else {
+        this.products = products;
+      }
+      console.log('Filtered products', this.products);
+    });
+  }
+
   onProductClick(product: Product): void {
     if (!this.selectedProducts.some((p) => p.id === product.id)) {
       this.selectedProducts.push(product);
@@ -49,8 +54,8 @@ export class CashSalesComponent {
 
   calculateSubtotal(product: Product): number {
     const discount = product.discount || 0;
-    const price = parseFloat(product.price);
-    return (price - (price * discount) / 100) * product.quantity;
+    const price = product.price;
+    return (price - (price * discount) / 100) * product.quantity!;
   }
 
   calculateSubtotalTotal(): number {
@@ -64,8 +69,7 @@ export class CashSalesComponent {
     return this.selectedProducts.reduce(
       (acc, product) =>
         acc +
-        ((parseFloat(product.price) * (product.discount || 0)) / 100) *
-          product.quantity,
+        ((product.price * (product.discount || 0)) / 100) * product.quantity!,
       0
     );
   }

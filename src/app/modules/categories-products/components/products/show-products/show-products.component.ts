@@ -12,8 +12,8 @@ export class ShowProductsComponent implements OnInit {
   query: string = '';
   isModalVisible: boolean = false;
   isEditModalVisible: boolean = false;
-  productIdToEdit: string = '';
-  @Output() editStudent = new EventEmitter<string>(); 
+  productIdToEdit:  number | null = null;
+  @Output() editStudent = new EventEmitter<number>(); 
   constructor(
     private productService: ProductService
   ) { }
@@ -23,7 +23,7 @@ export class ShowProductsComponent implements OnInit {
   toggleModal() {
     this.isModalVisible = !this.isModalVisible;
   }
-  toggleEditModal(id: string) {
+  toggleEditModal(id:number) {
     this.productIdToEdit = id;
     this.isEditModalVisible = !this.isEditModalVisible;
     if (id !== null) {
@@ -35,8 +35,7 @@ export class ShowProductsComponent implements OnInit {
     this.productService.getAllProducts().subscribe(products => {
       if (searchQuery && searchQuery.trim() !== '') {
         this.products = products.filter(product => 
-          product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          product.categoryId.toLowerCase().includes(searchQuery.toLowerCase())
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
       } else {
         this.products = products;
@@ -49,7 +48,7 @@ export class ShowProductsComponent implements OnInit {
     this.getAllProducts(this.query);
   }
 
-  deleteProduct(id: string): void {
+  deleteProduct(id:number): void {
     if (confirm("Are you sure you want to delete this product?")) {
       this.productService.deleteProduct(id).subscribe(res => {
         this.getAllProducts(this.query); // Refresh products after deletion

@@ -6,7 +6,7 @@ import { environment } from '../Environments/environments';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService {
   private apiUrl: string;
@@ -17,9 +17,8 @@ export class CategoryService {
     private localStorageService: LocalStorageService
   ) {
     this.savedOrg = this.localStorageService.getSavedOrgId();
-    this.apiUrl = `${environment.apiRootUrl}/organizations/${this.savedOrg}/categories`;
+    this.apiUrl = `${environment.apiRootUrl}categories`;
   }
-  
 
   getAllCategories(): Observable<Category[]> {
     const url = `${this.apiUrl}`;
@@ -31,16 +30,16 @@ export class CategoryService {
     return this.http.post<Category>(url, category);
   }
 
-  getCategorybyId(id: string): Observable<Category> {
+  getCategorybyId(id: number): Observable<Category> {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Category>(url);
   }
 
-  updateCategory(id: string, data: any): Observable<any> {
+  updateCategory(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  deleteCategory(id: string): Observable<any> {
+  deleteCategory(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

@@ -41,7 +41,11 @@
         </button>
       </div>
       <!-- Modal body -->
-      <form class="p-4 md:p-5">
+      <form
+        [formGroup]="productForm"
+        class="p-4 md:p-5"
+        (ngSubmit)="onSubmit()"
+      >
         <div class="grid gap-4 mb-4 grid-cols-2">
           <div class="col-span-2">
             <label
@@ -50,12 +54,13 @@
               >Name</label
             >
             <input
+              formControlName="name"
               type="text"
               name="name"
               id="name"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="Type product name"
-              required=""
+              required
             />
           </div>
           <div class="col-span-2 sm:col-span-1">
@@ -65,12 +70,13 @@
               >Price</label
             >
             <input
+              formControlName="price"
               type="number"
               name="price"
               id="price"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
               placeholder="$2999"
-              required=""
+              required
             />
           </div>
           <div class="col-span-2 sm:col-span-1">
@@ -80,14 +86,14 @@
               >Category</label
             >
             <select
+              formControlName="categoryId"
               id="category"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
             >
               <option selected="">Select category</option>
-              <option value="TV">TV/Monitors</option>
-              <option value="PC">PC</option>
-              <option value="GA">Gaming/Console</option>
-              <option value="PH">Phones</option>
+              <option *ngFor="let category of categories" [value]="category.id">
+                {{ category.name }}
+              </option>
             </select>
           </div>
           <div class="col-span-2">
@@ -97,11 +103,100 @@
               >Product Description</label
             >
             <textarea
+              formControlName="description"
               id="description"
               rows="4"
               class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Write product description here"
             ></textarea>
+          </div>
+          <!-- Add new fields here -->
+          <div class="col-span-2">
+            <label
+              for="productIdNumber"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Product ID Number</label
+            >
+            <input
+              formControlName="productIdNumber"
+              type="text"
+              id="productIdNumber"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Product ID Number"
+              required
+            />
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label
+              for="reaorderLevel"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Reorder Level</label
+            >
+            <input
+              formControlName="reaorderLevel"
+              type="number"
+              id="reaorderLevel"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Reorder Level"
+              required
+            />
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label
+              for="expiryDate"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Expiry Date</label
+            >
+            <input
+              formControlName="expiryDate"
+              type="date"
+              id="expiryDate"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              required
+            />
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label
+              for="storeQuantity"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Store Quantity</label
+            >
+            <input
+              formControlName="storeQuantity"
+              type="number"
+              id="storeQuantity"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Store Quantity"
+              required
+            />
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <label
+              for="countable"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Countable</label
+            >
+            <input
+              formControlName="countable"
+              type="checkbox"
+              id="countable"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            />
+          </div>
+          <div class="col-span-2">
+            <label
+              for="quantity"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >Quantity</label
+            >
+            <input
+              formControlName="quantity"
+              type="number"
+              id="quantity"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              placeholder="Quantity"
+              required
+            />
           </div>
         </div>
         <button

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CategoryService } from '../../../../../shared/Services/category.service';
 import { ProductService } from '../../../../../shared/Services/product.service';
@@ -8,14 +15,14 @@ import { Product } from '../../../../../shared/interfaces/products';
 @Component({
   selector: 'app-updateproduct',
   templateUrl: './updateproduct.component.html',
-  styleUrl: './updateproduct.component.scss'
+  styleUrl: './updateproduct.component.scss',
 })
 export class UpdateproductComponent implements OnChanges {
   productForm: FormGroup;
   categories: Category[] = [];
-  selectedProduct: Product|null=null;
+  selectedProduct: Product | null = null;
   @Input() modalId: string = '';
-  @Input() productIdToEdit: string = '';
+  @Input() productIdToEdit: number | null = null;
   @Input() isModalVisible: boolean = false;
   @Output() toggleModal = new EventEmitter<void>();
 
@@ -30,7 +37,7 @@ export class UpdateproductComponent implements OnChanges {
       quantity: ['', Validators.required],
       categoryId: ['', Validators.required],
       description: [''],
-      picture: ['']
+      picture: [''],
     });
   }
 
@@ -52,23 +59,26 @@ export class UpdateproductComponent implements OnChanges {
   }
 
   getProductToEdit() {
-    this.productService.getProductbyId(this.productIdToEdit).subscribe((product: Product) => {
-      this.selectedProduct = product;
-      this.productForm.patchValue({
-        name: product.name,
-        price: product.price,
-        quantity: product.quantity,
-        categoryId: product.categoryId,
-        description: product.description,
-        picture: product.picture
-      })
-    })
+    this.productService
+      .getProductbyId(this.productIdToEdit!)
+      .subscribe((product: Product) => {
+        this.selectedProduct = product;
+        this.productForm.patchValue({
+          name: product.name,
+          price: product.price,
+          quantity: product.quantity,
+          categoryId: product.categoryId,
+          description: product.description,
+          picture: product.picture,
+        });
+      });
   }
 
   onSubmit() {
     if (this.productForm.valid) {
       const productData = this.productForm.value;
-      this.productService.updateProduct(this.productIdToEdit,productData)
+      this.productService
+        .updateProduct(this.productIdToEdit!, productData)
         .subscribe(
           (response: any) => {
             console.log('Product added successfully:', response);
@@ -86,5 +96,4 @@ export class UpdateproductComponent implements OnChanges {
   closeModal() {
     this.toggleModal.emit();
   }
-
 }

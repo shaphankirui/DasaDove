@@ -7,7 +7,7 @@ import { Category } from '../../../../../shared/interfaces/categories';
 @Component({
   selector: 'app-add-products',
   templateUrl: './add-products.component.html',
-  styleUrl: './add-products.component.scss'
+  styleUrls: ['./add-products.component.scss'],
 })
 export class AddProductsComponent {
   productForm: FormGroup;
@@ -23,11 +23,16 @@ export class AddProductsComponent {
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
-      price: ['', Validators.required],
+      productIdNumber: ['', Validators.required],
+      reaorderLevel: [null, Validators.required],
+      price: [null, Validators.required],
+      expiryDate: [null, Validators.required],
+      storeQuantity: [null, Validators.required],
+      countable: [false, Validators.required],
       quantity: ['', Validators.required],
       categoryId: ['', Validators.required],
       description: [''],
-      picture: ['']
+      picture: [''],
     });
   }
 
@@ -46,25 +51,27 @@ export class AddProductsComponent {
   onSubmit() {
     if (this.productForm.valid) {
       const productData = this.productForm.value;
-      this.productService.addProduct(productData)
-        .subscribe(
-          (response: any) => {
-            console.log('Product added successfully:', response);
-            // Reset the form if needed
-            this.productForm.reset();
-            this.closeModal();
-          },
-          (error: any) => {
-            console.error('Error adding product:', error);
-            // Handle error
-          }
-        );
+      // Convert categoryId to a number
+      productData.categoryId = parseInt(productData.categoryId, 10);
+      // Ensure expiryDate is in ISO-8601 format
+      productData.expiryDate = new Date(productData.expiryDate).toISOString();
+
+      this.productService.addProduct(productData).subscribe(
+        (response: any) => {
+          console.log('Product added successfully:', response);
+          // Reset the form if needed
+          this.productForm.reset();
+          this.closeModal();
+        },
+        (error: any) => {
+          console.error('Error adding product:', error);
+          // Handle error
+        }
+      );
     }
   }
 
   closeModal() {
     this.toggleModal.emit();
   }
-
 }
-

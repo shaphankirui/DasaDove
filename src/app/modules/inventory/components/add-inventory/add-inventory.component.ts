@@ -10,7 +10,7 @@ import { Inventory } from '../../../../shared/interfaces/inventory.interface';
 import { Supplier } from '../../../../shared/interfaces/supplier.interface';
 import { SuppliersService } from '../../../../shared/Services/suppliers.service';
 interface PurchaseData {
-  product_id: string;
+  product_id: number;
   quantity: number | undefined;
   buying_price: number | undefined;
   total: number;
@@ -86,10 +86,8 @@ export class AddInventoryComponent {
   getAllProducts(searchQuery?: string): void {
     this.productService.getAllProducts().subscribe((products) => {
       if (searchQuery && searchQuery.trim() !== '') {
-        this.products = products.filter(
-          (product) =>
-            product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.categoryId.toLowerCase().includes(searchQuery.toLowerCase())
+        this.products = products.filter((product) =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
         );
       } else {
         this.products = products;
