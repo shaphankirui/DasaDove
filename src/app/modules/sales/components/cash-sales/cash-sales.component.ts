@@ -14,6 +14,7 @@ interface PaymentMethods {
   styleUrls: ['./cash-sales.component.scss'], // Fixed styleUrl typo
 })
 export class CashSalesComponent {
+  searchQuery: string = '';
   products: Product[] = [];
   constructor(private productService: ProductService) {}
   ngOnInit() {
@@ -31,11 +32,12 @@ export class CashSalesComponent {
 
   showPayment: boolean = false; // State to show/hide payment section
 
-  getAllProducts(searchQuery?: string): void {
+  getAllProducts(): void {
+    console.log('type query', this.searchQuery);
     this.productService.getAllProducts().subscribe((products) => {
-      if (searchQuery && searchQuery.trim() !== '') {
+      if (this.searchQuery && this.searchQuery.trim() !== '') {
         this.products = products.filter((product) =>
-          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+          product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
       } else {
         this.products = products;
@@ -55,7 +57,7 @@ export class CashSalesComponent {
   calculateSubtotal(product: Product): number {
     const discount = product.discount || 0;
     const price = product.price;
-    return (price - (price * discount) / 100) * product.quantity!;
+    return (price - (price * discount) / 100) * product.selectedProducts! || 0;
   }
 
   calculateSubtotalTotal(): number {

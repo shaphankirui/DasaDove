@@ -6,7 +6,7 @@ import { Supplier } from '../interfaces/supplier.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SuppliersService {
   private apiUrl: string;
@@ -17,13 +17,13 @@ export class SuppliersService {
     private localStorageService: LocalStorageService
   ) {
     this.savedOrg = this.localStorageService.getSavedOrgId();
-    this.apiUrl = `${environment.apiRootUrl}/organizations/${this.savedOrg}/suppliers`;
+    this.apiUrl = `${environment.apiRootUrl}suppliers`;
   }
   getAllSupplier(): Observable<Supplier[]> {
     const url = `${this.apiUrl}`;
     return this.http.get<Supplier[]>(url);
   }
-  
+
   addSupplier(supplier: Supplier): Observable<Supplier> {
     const url = `${this.apiUrl}`;
     return this.http.post<Supplier>(url, supplier);
@@ -33,11 +33,11 @@ export class SuppliersService {
     return this.http.get<Supplier>(url);
   }
 
-  updateSupplier(id:string, data:any): Observable<any> {
+  updateSupplier(id: string, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
 
-  deleteSupplier(id:string): Observable<any> {
+  deleteSupplier(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }
