@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ProductService } from '../../../../shared/Services/product.service';
 import { Product } from '../../../../shared/interfaces/products';
+import { SalesService } from '../../../../shared/Services/sales.service';
+import { Sales } from '../../../../shared/interfaces/sales.interface';
 
 interface PaymentMethods {
   cash: number;
@@ -16,12 +18,16 @@ interface PaymentMethods {
 export class CashSalesComponent {
   searchQuery: string = '';
   products: Product[] = [];
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private salesService: SalesService
+  ) {}
   ngOnInit() {
     this.getAllProducts();
   }
 
   selectedProducts: Product[] = [];
+  allProducts: Product[] = [];
   productTotals: number[] = []; // Initialize productTotals as an empty array
 
   paymentMethods: PaymentMethods = {
@@ -91,6 +97,46 @@ export class CashSalesComponent {
     } else {
       console.error('Invalid index for removing selected product');
     }
+  }
+  submitOrder() {
+    const itemsToSend = this.selectedProducts.map((product) => ({
+      name: product.name,
+      id: product.id,
+      category_id: product.categoryId,
+      price: product.price,
+      selectedItems: product.selectedProducts || 0,
+    }));
+    const totalPayment =
+      this.paymentMethods.cash +
+      this.paymentMethods.mpesa +
+      this.paymentMethods.bank;
+    const sales: Sales = {
+      items: itemsToSend,
+      cashPaid: this.paymentMethods.cash,
+      mpesaPaid: this.paymentMethods.mpesa,
+      bankPaid: this.paymentMethods.bank,
+      taxAmount: totalPayment * 0.16,
+      discountAmount: this.paymentMethods.bank,
+      total: this.calculateTotal(),
+      customerId: this.paymentMethods.bank,
+      printerIp: '192.168.1.6',
+      isVoided: false,
+      voidedBy: false,
+      totalAmountPaid: totalPayment,
+    };
+    this.salesService.addSales(sales).subscribe((res: Sales) => {
+      console.log('Sales created', res);
+      this.selectedProducts = [];
+      this.productTotals = [];
+      this.paymentMethods = {
+        cash: 0,
+        mpesa: 0,
+        bank: 0,
+      };
+      this.showPayment = false;
+      this.getAllProducts();
+      alert('Order submitted successfully');
+    });
   }
 
   submitPayment(): void {
