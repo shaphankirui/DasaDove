@@ -3,6 +3,7 @@ import { ProductService } from '../../../../shared/Services/product.service';
 import { Product } from '../../../../shared/interfaces/products';
 import { SalesService } from '../../../../shared/Services/sales.service';
 import { Sales } from '../../../../shared/interfaces/sales.interface';
+import { HotToastService } from '@ngneat/hot-toast';
 
 interface PaymentMethods {
   cash: number;
@@ -20,7 +21,8 @@ export class CashSalesComponent {
   products: Product[] = [];
   constructor(
     private productService: ProductService,
-    private salesService: SalesService
+    private salesService: SalesService,
+    private toast: HotToastService
   ) {}
   ngOnInit() {
     this.getAllProducts();
@@ -54,9 +56,23 @@ export class CashSalesComponent {
 
   onProductClick(product: Product): void {
     if (!this.selectedProducts.some((p) => p.id === product.id)) {
+      product.selectedProducts = product.selectedProducts ?? 1; // Initialize to 1 if undefined
       this.selectedProducts.push(product);
       this.productTotals.push(this.calculateSubtotal(product));
       console.log('Selected Products:', this.selectedProducts);
+    }
+  }
+
+  addQuantity(product: Product): void {
+    console.log('Product:', product);
+    product.selectedProducts = (product.selectedProducts ?? 1) + 1; // Initialize to 1 if undefined
+    console.log('Selected Products:', product.selectedProducts);
+  }
+
+  reduceQuantity(product: Product): void {
+    if ((product.selectedProducts ?? 1) > 1) {
+      product.selectedProducts = (product.selectedProducts ?? 1) - 1; // Initialize to 1 if undefined
+      console.log('Selected Products:', product.selectedProducts);
     }
   }
 
@@ -124,6 +140,10 @@ export class CashSalesComponent {
       voidedBy: false,
       totalAmountPaid: totalPayment,
     };
+    if (totalPayment < sales.total) {
+      this.toast.error('Insufficient Payments,please make full payment');
+      return;
+    }
     this.salesService.addSales(sales).subscribe((res: Sales) => {
       console.log('Sales created', res);
       this.selectedProducts = [];
@@ -135,7 +155,7 @@ export class CashSalesComponent {
       };
       this.showPayment = false;
       this.getAllProducts();
-      alert('Order submitted successfully');
+      this.toast.success('Sale submitted successfully');
     });
   }
 

@@ -15,12 +15,16 @@ export class SalesService {
   }
 
   private getHeaders(): HttpHeaders {
-    const token =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiRG9yZWVuQGdtYWlsLmNvbSIsImlhdCI6MTcxODQ4MTQwNCwiZXhwIjoxNzE4NDg1MDA0fQ.K1S9iNIqAnR14Nx4zPOxDRQw0jZemc4ViqgAnv9EcEs';
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const token = localStorage.getItem('token');
+    if (token) {
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    } else {
+      // Handle case where token is not available
+      return new HttpHeaders();
+    }
   }
 
-  getAllCategories(): Observable<Sales[]> {
+  getAllSales(): Observable<Sales[]> {
     const url = `${this.apiUrl}`;
     return this.http.get<Sales[]>(url, { headers: this.getHeaders() });
   }

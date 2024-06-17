@@ -15,4 +15,5 @@ export interface Sales {
   printerIp?: string;
   isVoided?: boolean;
   voidedBy?: any;
+  createdAt?: Date;
 }
