@@ -1,4 +1,4 @@
-<div *ngIf="!savedOrg" class="lg:flex min-h-screen w-full bg-jadedustbg">
+<div *ngIf="savedOrg" class="lg:flex min-h-screen w-full bg-jadedustbg">
   <div class="lg:hidden block lg:w-1/2 w-full md:h-[400px] h-[250px] relative">
     <div
       class="absolute inset-0 bg-cover bg-center"
@@ -43,10 +43,14 @@
       <div
         class="rounded-lg p-8 space-y-4 lg:w-[550px] w-[100%] lg:max-w-[550px] mx-auto"
       >
-        <h2 class="md:text-[40px] text-[25px] font-bold text-darktext mb-4 text-center">
+        <h2
+          class="md:text-[40px] text-[25px] font-bold text-darktext mb-4 text-center"
+        >
           Organization required
         </h2>
-        <p class="text-darkGray mb-4 md:text-[20px] text-[16px] text-center font-normal">
+        <p
+          class="text-darkGray mb-4 md:text-[20px] text-[16px] text-center font-normal"
+        >
           Enter 6 digit code sent to your email
         </p>
         <p class="text-darkGray mb-4 text-[16px] text-center font-normal">
@@ -104,6 +108,6 @@
   </div>
 </div>
 
-<ng-container *ngIf="savedOrg">
+<ng-container *ngIf="!savedOrg">
   <app-login></app-login>
 </ng-container>
