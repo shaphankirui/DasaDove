@@ -15,6 +15,8 @@ import { SurpliersModule } from './modules/surpliers/surpliers.module';
 import { AuthLayoutComponent } from './modules/layout/components/auth-layout/auth-layout.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { SalesModule } from './modules/sales/sales.module';
+import { LoaderComponent } from './shared/Data/components/loader/loader.component';
+import { BtnLOderComponent } from './shared/Data/components/btn-loder/btn-loder.component';
 
 @NgModule({
   declarations: [AppComponent],

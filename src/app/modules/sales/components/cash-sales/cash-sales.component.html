@@ -43,71 +43,60 @@
 </form>
 <div class="container">
   <div class="products-section" *ngIf="!showPayment">
-    <div class="header">
-      <h1>Name</h1>
-      <h1>Quantity</h1>
-      <h1>Price</h1>
+    <div
+      *ngIf="!productsLoading"
+      class="relative overflow-x-auto shadow-md sm:rounded-lg"
+    >
+      <table class="w-full text-sm text-left rtl:text-right text-gray-400">
+        <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+          <tr>
+            <th scope="col" class="px-16 py-3">
+              <span class="sr-only">Image</span>
+            </th>
+            <th scope="col" class="px-6 py-3">Name</th>
+            <th scope="col" class="px-6 py-3">Quantity</th>
+            <th scope="col" class="px-6 py-3">Buying Price</th>
+            <th scope="col" class="px-6 py-3">Seling Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            (click)="onProductClick(product)"
+            *ngFor="let product of products"
+            class="border-b bg-gray-800 border-gray-700 hover:bg-gray-600"
+          >
+            <td class="p-4">
+              <img
+                src="/docs/images/products/apple-watch.png"
+                class="w-16 md:w-32 max-w-full max-h-full"
+                alt="{{ product.name }}"
+                ch
+              />
+            </td>
+            <td class="px-6 py-4 font-semibold text-white">
+              {{ product.name }}
+            </td>
+            <td class="px-6 py-4 font-semibold text-white">
+              {{ product.quantity }}
+            </td>
+            <td class="px-6 py-4 font-semibold text-white">Ksh.100</td>
+
+            <td class="px-6 py-4 font-semibold text-white">
+              ksh.{{ product.price }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div
-      *ngFor="let product of products"
-      (click)="onProductClick(product)"
-      class="product"
+      *ngIf="productsLoading"
+      class="flex justify-center items-center w-full"
     >
-      <h1>{{ product.name }}</h1>
-      <h1>{{ product.quantity }}</h1>
-      <h1>{{ product.price }}</h1>
+      <app-loader></app-loader>
     </div>
   </div>
 
   <div class="selected-products-section">
-    <!-- <div class="header">
-      <h1>Name</h1>
-      <h1>Quantity</h1>
-      <h1>Discount</h1>
-      <h1>Price</h1>
-      <h1>Subtotal</h1>
-      <h1>Remove</h1>
-    </div>
-    <div
-      *ngFor="let product of selectedProducts; let i = index"
-      class="selected-product"
-    >
-      <h1>{{ product.name }}</h1>
-      <input
-        type="number"
-        [(ngModel)]="product.selectedProducts"
-        class="quantity-input"
-      />
-      <input
-        type="number"
-        [(ngModel)]="product.discount"
-        class="discount-input"
-      />
-      <h1>{{ product.price }}</h1>
-      <h1>{{ calculateSubtotal(product) }}</h1>
-      <div>
-        <button
-          class="bg-red-500 hover:bg-red-700 ml-3 text-black font-bold py-1 px-2 rounded"
-          (click)="removeSelectedProduct(i)"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
-      </div>
-    </div> -->
-
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left rtl:text-right text-gray-400">
         <thead class="text-xs uppercase bg-gray-700 text-gray-400">
@@ -203,8 +192,24 @@
               <a
                 (click)="removeSelectedProduct(i)"
                 class="font-medium text-red-500 hover:underline"
-                >Remove</a
-              >
+                ><svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-octagon-x"
+                >
+                  <polygon
+                    points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"
+                  />
+                  <path d="m15 9-6 6" />
+                  <path d="m9 9 6 6" /></svg
+              ></a>
             </td>
           </tr>
         </tbody>

@@ -19,13 +19,15 @@ interface PaymentMethods {
 export class CashSalesComponent {
   searchQuery: string = '';
   products: Product[] = [];
+  productsLoading: boolean = true;
+  posting: boolean = false;
   constructor(
     private productService: ProductService,
     private salesService: SalesService,
     private toast: HotToastService
   ) {}
   ngOnInit() {
-    this.getAllProducts();
+    // this.getAllProducts();
   }
 
   selectedProducts: Product[] = [];
@@ -41,14 +43,17 @@ export class CashSalesComponent {
   showPayment: boolean = false; // State to show/hide payment section
 
   getAllProducts(): void {
+    this.productsLoading = true;
     console.log('type query', this.searchQuery);
     this.productService.getAllProducts().subscribe((products) => {
       if (this.searchQuery && this.searchQuery.trim() !== '') {
         this.products = products.filter((product) =>
           product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
         );
+        this.productsLoading = false;
       } else {
-        this.products = products;
+        // this.products = products;
+        this.productsLoading = false;
       }
       console.log('Filtered products', this.products);
     });
