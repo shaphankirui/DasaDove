@@ -2,12 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../Environments/environments';
 import { Sales } from '../interfaces/sales.interface';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SalesService {
+  isAuthenticated = new BehaviorSubject<boolean>(false);
+
   private apiUrl: string;
 
   constructor(private http: HttpClient) {

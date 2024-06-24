@@ -41,8 +41,8 @@
     </button>
   </div>
 </form>
-<div class="container">
-  <div class="products-section" *ngIf="!showPayment">
+<div class="container flex flex-row p-1">
+  <div class="w-[50%]" *ngIf="!showPayment">
     <div
       *ngIf="!productsLoading"
       class="relative overflow-x-auto shadow-md sm:rounded-lg"
@@ -96,7 +96,7 @@
     </div>
   </div>
 
-  <div class="selected-products-section">
+  <div class="p-1">
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table class="w-full text-sm text-left rtl:text-right text-gray-400">
         <thead class="text-xs uppercase bg-gray-700 text-gray-400">
@@ -216,12 +216,15 @@
       </table>
     </div>
 
-    <button *ngIf="selectedProducts.length > 0" (click)="showPayment = true">
+    <button
+      *ngIf="selectedProducts.length > 0 && !showPayment"
+      (click)="showPayment = true"
+    >
       Proceed to Payment
     </button>
   </div>
 
-  <div class="payment-section" *ngIf="showPayment">
+  <!-- <div class="payment-section" *ngIf="showPayment">
     <h2>Payment Methods</h2>
     <div class="flex flex-col gap-3">
       <label class="w-[50px] flex flex-row gap-3">
@@ -270,5 +273,96 @@
     </div>
 
     <button (click)="submitOrder()">Submit Payment</button>
+  </div> -->
+  <div class="p-1" *ngIf="showPayment">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-400">
+        <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">Description</th>
+            <th scope="col" class="px-6 py-3">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b bg-gray-800 border-gray-700">
+            <td class="px-6 py-4 font-semibold text-white">Subtotal</td>
+            <td class="px-6 py-4 font-semibold text-white">
+              Ksh. {{ calculateSubtotalTotal() | number : "1.2-2" }}
+            </td>
+          </tr>
+          <tr class="border-b bg-gray-800 border-gray-700">
+            <td class="px-6 py-4 font-semibold text-white">Tax (16%)</td>
+            <td class="px-6 py-4 font-semibold text-white">
+              Ksh. {{ calculateTax() | number : "1.2-2" }}
+            </td>
+          </tr>
+          <tr class="border-b bg-gray-800 border-gray-700">
+            <td class="px-6 py-4 font-semibold text-white">Total</td>
+            <td class="px-6 py-4 font-semibold text-white">
+              Ksh. {{ calculateTotal() | number : "1.2-2" }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-6">
+      <h3 class="text-lg font-semibold text-white mb-4">Payment Methods</h3>
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <label for="cash" class="block mb-2 text-sm font-medium text-gray-300"
+            >Cash</label
+          >
+          <input
+            type="number"
+            id="cash"
+            [(ngModel)]="paymentMethods.cash"
+            class="w-full border text-sm rounded-lg block px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter cash amount"
+          />
+        </div>
+        <div>
+          <label
+            for="mpesa"
+            class="block mb-2 text-sm font-medium text-gray-300"
+            >Mpesa</label
+          >
+          <input
+            type="number"
+            id="mpesa"
+            [(ngModel)]="paymentMethods.mpesa"
+            class="w-full border text-sm rounded-lg block px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter Mpesa amount"
+          />
+        </div>
+        <div>
+          <label for="bank" class="block mb-2 text-sm font-medium text-gray-300"
+            >Bank</label
+          >
+          <input
+            type="number"
+            id="bank"
+            [(ngModel)]="paymentMethods.bank"
+            class="w-full border text-sm rounded-lg block px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+            placeholder="Enter bank amount"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-6 flex justify-between">
+      <button
+        (click)="showPayment = false"
+        class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
+      >
+        Back To Products
+      </button>
+      <button
+        (click)="openDialog()"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+      >
+        Submit Payment
+      </button>
+    </div>
   </div>
 </div>

@@ -5,6 +5,7 @@ import { Organization } from '../interfaces/orginization.inteface';
 import { HotToastService } from '@ngneat/hot-toast';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
+import { environment } from '../Environments/environments';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -14,7 +15,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `https://cpos-shop-backend.vercel.app/organizations`;
+  private apiUrl = `${environment.apiRootUrl}auth/login`;
   private isLoggedInSource = new BehaviorSubject<boolean>(false);
   authStatusChanged = this.isLoggedInSource.asObservable();
 
@@ -32,12 +33,16 @@ export class AuthService {
     return !!token;
   }
 
-  login(token: string) {
+  login(token: string, userEmail: string) {
     this.isLoggedInSource.next(true);
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('token', token);
+      localStorage.setItem('userEmail', userEmail);
     }
+  }
+  signIn(data: any): Observable<any> {
+    return this.httpClient.post<any>(this.apiUrl, data);
   }
 
   logout() {

@@ -101,7 +101,7 @@ const routes: Routes = [
       {
         path: 'login',
         component: OrganizationSelectionComponent,
-        canDeactivate: [AuthGuard],
+        // canDeactivate: [AuthGuard],
       },
 
       { path: 'register', component: RegisterComponent },

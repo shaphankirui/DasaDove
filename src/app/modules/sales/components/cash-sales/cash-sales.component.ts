@@ -4,6 +4,12 @@ import { Product } from '../../../../shared/interfaces/products';
 import { SalesService } from '../../../../shared/Services/sales.service';
 import { Sales } from '../../../../shared/interfaces/sales.interface';
 import { HotToastService } from '@ngneat/hot-toast';
+import {
+  AppearanceAnimation,
+  DialogRemoteControl,
+  DisappearanceAnimation,
+} from '@ng-vibe/dialog';
+import { AuthComponent } from '../../../../shared/Data/components/auth/auth.component';
 
 interface PaymentMethods {
   cash: number;
@@ -17,6 +23,7 @@ interface PaymentMethods {
   styleUrls: ['./cash-sales.component.scss'], // Fixed styleUrl typo
 })
 export class CashSalesComponent {
+  private dialog: DialogRemoteControl = new DialogRemoteControl(AuthComponent);
   searchQuery: string = '';
   products: Product[] = [];
   productsLoading: boolean = true;
@@ -27,7 +34,7 @@ export class CashSalesComponent {
     private toast: HotToastService
   ) {}
   ngOnInit() {
-    // this.getAllProducts();
+    this.getAllProducts();
   }
 
   selectedProducts: Product[] = [];
@@ -52,7 +59,7 @@ export class CashSalesComponent {
         );
         this.productsLoading = false;
       } else {
-        // this.products = products;
+        this.products = products;
         this.productsLoading = false;
       }
       console.log('Filtered products', this.products);
@@ -175,5 +182,51 @@ export class CashSalesComponent {
     } else {
       alert('Insufficient Payment');
     }
+  }
+
+  openDialog(optionalPayload?: any) {
+    this.dialog.options = {
+      width: '500px',
+      height: '300px',
+      showOverlay: true,
+      animationIn: AppearanceAnimation.ZOOM_IN,
+      animationOut: DisappearanceAnimation.ZOOM_OUT,
+    };
+    const itemsToSend = this.selectedProducts.map((product) => ({
+      name: product.name,
+      id: product.id,
+      category_id: product.categoryId,
+      price: product.price,
+      selectedItems: product.selectedProducts || 0,
+    }));
+    const totalPayment =
+      this.paymentMethods.cash +
+      this.paymentMethods.mpesa +
+      this.paymentMethods.bank;
+    const sales: Sales = {
+      items: itemsToSend,
+      cashPaid: this.paymentMethods.cash,
+      mpesaPaid: this.paymentMethods.mpesa,
+      bankPaid: this.paymentMethods.bank,
+      taxAmount: totalPayment * 0.16,
+      discountAmount: this.paymentMethods.bank,
+      total: this.calculateTotal(),
+      customerId: this.paymentMethods.bank,
+      printerIp: '192.168.1.6',
+      isVoided: false,
+      voidedBy: false,
+      totalAmountPaid: totalPayment,
+    };
+    if (totalPayment < this.calculateTotal()) {
+      this.toast.error('Not enough payment');
+      return;
+    }
+    this.dialog.openDialog(sales).subscribe((resp) => {
+      console.log('Response from dialog content:', resp);
+    });
+  }
+
+  closeDialog() {
+    this.dialog.closeDialog();
   }
 }

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { environment } from '../../../../shared/Environments/environments';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AuthService } from '../../../../shared/Services/auth.service';
 import { LocalStorageService } from '../../../../shared/Services/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -39,9 +39,10 @@ export class LoginComponent {
     this.http.post(url, loginData).subscribe(
       (response: any) => {
         const token = response.access_token; // Assuming the token is in the response
-        this.authService.login(token);
-        this.toast.success('Login successful');
+        const userEmail = response.userEmail; // Assuming the token is in the response
+        this.authService.login(token, userEmail);
         this.router.navigate(['/sales']);
+        this.toast.success('Login successful');
       },
       (error: any) => {
         console.error('Login error:', error);

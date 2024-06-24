@@ -6,6 +6,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { AppRoutingModule } from '../../app-routing.module';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,12 @@ import { RouterModule } from '@angular/router';
     OrganizationSelectionComponent,
     RegisterComponent,
   ],
-  imports: [CommonModule, FormsModule, HttpClientModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HttpClientModule,
+    RouterModule,
+    AppRoutingModule,
+  ],
 })
 export class AuthModule {}
