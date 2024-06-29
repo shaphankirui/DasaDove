@@ -216,6 +216,8 @@ export class CashSalesComponent {
       isVoided: false,
       voidedBy: false,
       totalAmountPaid: totalPayment,
+      mpesaTransactionId: "SFS4U8AY6Q"
+
     };
     if (totalPayment < this.calculateTotal()) {
       this.toast.error('Not enough payment');

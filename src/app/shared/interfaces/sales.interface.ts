@@ -16,4 +16,5 @@ export interface Sales {
   isVoided?: boolean;
   voidedBy?: any;
   createdAt?: Date;
+  mpesaTransactionId?: string;
 }
