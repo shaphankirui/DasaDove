@@ -19,6 +19,7 @@ import { IncomeReportsComponent } from './modules/reports/components/income-repo
 import { PurchaseReportsComponent } from './modules/reports/components/purchase-reports/purchase-reports.component';
 import { CreditReportsComponent } from './modules/reports/components/credit-reports/credit-reports.component';
 import { VoidedSalesReportsComponent } from './modules/reports/components/voided-sales-reports/voided-sales-reports.component';
+import { ShowCustomerComponent } from './modules/customers/components/show-customer/show-customer.component';
 
 const routes: Routes = [
   {
@@ -88,6 +89,11 @@ const routes: Routes = [
       {
         path: 'voids-reports',
         component: VoidedSalesReportsComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'customers',
+        component: ShowCustomerComponent,
         // canActivate: [AuthGuard],
       },
     ],

@@ -20,6 +20,9 @@ import { provideNgVibeDialog } from '@ng-vibe/dialog';
 import { AuthComponent } from './shared/Data/components/auth/auth.component';
 import { ModalComponent } from './shared/Data/components/modal/modal.component';
 import { BtnLOderComponent } from './shared/Data/components/btn-loder/btn-loder.component';
+import { CustomersModule } from './modules/customers/customers.module';
+import { LpoModule } from './modules/lpo/lpo.module';
+import { QuotationsModule } from './modules/quotations/quotations.module';
 
 @NgModule({
   declarations: [AppComponent, AuthComponent, ModalComponent],
@@ -33,6 +36,9 @@ import { BtnLOderComponent } from './shared/Data/components/btn-loder/btn-loder.
     InventoryModule,
     DashboardModule,
     SalesModule,
+    CustomersModule,
+    LpoModule,
+    QuotationsModule,
     SurpliersModule,
     ReportsModule,
     ReactiveFormsModule,
