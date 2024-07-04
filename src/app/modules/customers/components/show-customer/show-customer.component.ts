@@ -5,6 +5,8 @@ import {
   DisappearanceAnimation,
 } from '@ng-vibe/dialog';
 import { AddCustomerComponent } from '../add-customer/add-customer.component';
+import { CustomerService } from '../../../../shared/Services/customer.service';
+import { Customer } from '../../../../shared/interfaces/customer.interface';
 
 @Component({
   selector: 'app-show-customer',
@@ -15,6 +17,17 @@ export class ShowCustomerComponent {
   private dialog: DialogRemoteControl = new DialogRemoteControl(
     AddCustomerComponent
   );
+  customers: Customer[] = [];
+  constructor(private customerService: CustomerService) {}
+  ngOnInit(): void {
+    this.getAllCustomers();
+  }
+  getAllCustomers() {
+    this.customerService.getAllCustomers().subscribe((data) => {
+      console.log(data);
+      this.customers = data;
+    });
+  }
 
   openDialog(optionalPayload?: any) {
     this.dialog.options = {

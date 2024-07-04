@@ -211,13 +211,12 @@ export class CashSalesComponent {
       taxAmount: totalPayment * 0.16,
       discountAmount: this.paymentMethods.bank,
       total: this.calculateTotal(),
-      customerId: this.paymentMethods.bank,
+      customerId: 1,
       printerIp: '192.168.1.6',
       isVoided: false,
       voidedBy: false,
       totalAmountPaid: totalPayment,
-      mpesaTransactionId: "SFS4U8AY6Q"
-
+      mpesaTransactionId: 'SFS4U8AY6Q',
     };
     if (totalPayment < this.calculateTotal()) {
       this.toast.error('Not enough payment');
