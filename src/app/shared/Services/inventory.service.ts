@@ -6,7 +6,7 @@ import { Inventory } from '../interfaces/inventory.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InventoryService {
   private apiUrl: string;
@@ -19,7 +19,6 @@ export class InventoryService {
     this.savedOrg = this.localStorageService.getSavedOrgId();
     this.apiUrl = `${environment.apiRootUrl}/organizations/${this.savedOrg}/inventory`;
   }
-  
 
   getAllInventorys(): Observable<Inventory[]> {
     const url = `${this.apiUrl}`;
@@ -42,5 +41,14 @@ export class InventoryService {
 
   deleteInventory(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  createStockTransfer(stock: any): Observable<any> {
+    const apiUrl: string = `${this.apiUrl}/inventory-movements`;
+    return this.http.post<any>(apiUrl, stock);
+  }
+  getStockTransfer(): Observable<any> {
+    const url = `${this.apiUrl}/inventory-movements`;
+    return this.http.get<any>(url);
   }
 }

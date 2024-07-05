@@ -7,12 +7,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from '../../app-routing.module';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     OrganizationSelectionComponent,
     RegisterComponent,
+    UserListComponent,
   ],
   imports: [
     CommonModule,

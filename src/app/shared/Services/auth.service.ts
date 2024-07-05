@@ -6,6 +6,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 import { LocalStorageService } from './local-storage.service';
 import { Router } from '@angular/router';
 import { environment } from '../Environments/environments';
+import { UserInterface } from '../interfaces/auth.interface';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -56,6 +57,10 @@ export class AuthService {
   getAllOrg(): Observable<Organization[]> {
     const url = `${this.apiUrl}`;
     return this.httpClient.get<Organization[]>(url);
+  }
+  getAllUsers(): Observable<UserInterface[]> {
+    const url = `${this.apiUrl}`;
+    return this.httpClient.get<UserInterface[]>(url);
   }
 
   private checkLoginStatus() {

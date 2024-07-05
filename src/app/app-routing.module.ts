@@ -20,6 +20,8 @@ import { PurchaseReportsComponent } from './modules/reports/components/purchase-
 import { CreditReportsComponent } from './modules/reports/components/credit-reports/credit-reports.component';
 import { VoidedSalesReportsComponent } from './modules/reports/components/voided-sales-reports/voided-sales-reports.component';
 import { ShowCustomerComponent } from './modules/customers/components/show-customer/show-customer.component';
+import { StockListComponent } from './modules/inventory/components/stock-list/stock-list.component';
+import { TransferFromStoreComponent } from './modules/inventory/components/transfer-from-store/transfer-from-store.component';
 
 const routes: Routes = [
   {
@@ -94,6 +96,16 @@ const routes: Routes = [
       {
         path: 'customers',
         component: ShowCustomerComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'stock',
+        component: StockListComponent,
+        // canActivate: [AuthGuard],
+      },
+      {
+        path: 'transfer-stock',
+        component: TransferFromStoreComponent,
         // canActivate: [AuthGuard],
       },
     ],

@@ -4,13 +4,15 @@ import { AddInventoryComponent } from './components/add-inventory/add-inventory.
 import { TransferFromStoreComponent } from './components/transfer-from-store/transfer-from-store.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { StockListComponent } from './components/stock-list/stock-list.component';
 
 
 
 @NgModule({
   declarations: [
     AddInventoryComponent,
-    TransferFromStoreComponent
+    TransferFromStoreComponent,
+    StockListComponent
   ],
   imports: [
     CommonModule,

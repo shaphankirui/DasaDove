@@ -1,4 +1,5 @@
 export interface Product {
+  pax: any;
   discount: number;
   id: number;
   name: string;
@@ -8,7 +9,7 @@ export interface Product {
   picture?: string;
   availability: boolean;
   quantity?: number;
-  store_quantity?: number;
+  storeQuantity?: number;
   selectedProducts?: number;
   buying_price?: number;
   quantityToAdd?: number;
