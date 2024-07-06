@@ -1,89 +1,91 @@
-import { DatabaseItemInterface } from "./database-item.interface";
+import { DatabaseItemInterface } from './database-item.interface';
 
 export interface ResetPasswordInterface {
-  email: string,
+  email: string;
 }
 
 export interface PasswordResetInterface {
-  org: number,
-  uid: number,
-  token: string,
+  org: number;
+  uid: number;
+  token: string;
 }
 
-
 export interface SetNewPasswordInterface extends PasswordResetInterface {
-  password: string,
+  password: string;
 }
 
 export interface LoginInterface {
-  email: string,
-  password: string,
+  email: string;
+  password: string;
 }
 
 export interface OrganizationLoginInterface extends LoginInterface {
-  orgId: string,
+  orgId: string;
 }
-
 
 export type PermissionType = 'admin' | 'waiter' | 'manager' | 'sales';
 
 export enum UserRolesEnum {
-  ADMIN = 'ADMIN',
-  WAITER = 'WAITER',
-  SALES = 'SALES',
+  ADMIN = 'Admin',
+  WAITER = 'Sales',
+  SALES = 'Accountant',
 }
 
-export type permissionAccessType = 'read' | 'create' | 'update' | 'professional' | 'fullAccess';
+export type permissionAccessType =
+  | 'read'
+  | 'create'
+  | 'update'
+  | 'professional'
+  | 'fullAccess';
 
 export interface PermissionInterface extends DatabaseItemInterface {
-  userId?: number | string |any| undefined,
-  permission: PermissionType,
-  admin: boolean | number,
-  create: boolean | number,
-  read: boolean | number,
-  update: boolean | number,
-  delete: boolean | number,
-  professional: boolean | number,
+  userId?: number | string | any | undefined;
+  permission: PermissionType;
+  admin: boolean | number;
+  create: boolean | number;
+  read: boolean | number;
+  update: boolean | number;
+  delete: boolean | number;
+  professional: boolean | number;
 }
 
 export interface UserInterface extends DatabaseItemInterface {
-  name: string|any,
-  id:any;
-  email: string|any,
-  username: string|any,
-  phone: string | number|any,
-  role: UserRolesEnum,
-  photoURL?: string,
-  status?: string,
-  created_at?: string,
-  createdBy: string,
-  pin?: string,
+  password?: any;
+  fullName: string | any;
+  id: any;
+  email: string | any;
+  username: string | any;
+  phone: string | number | any;
+  role: any;
+  photoURL?: string;
+  status?: string;
+  created_at?: string;
+  createdBy: string;
+  pin?: string;
   permissions?: PermissionInterface[];
 }
 
 export interface UserRegistrationInterface extends DatabaseItemInterface {
-  name: string,
-  email: string,
-  phone: string,
-  username: string,
-  photoURL?: string,
-  createdBy: string,
-  dateOfBirth: string | null,
+  name: string;
+  email: string;
+  phone: string;
+  username: string;
+  photoURL?: string;
+  createdBy: string;
+  dateOfBirth: string | null;
 }
 
-
-
 export interface UserSessionInterface {
-  user: UserInterface,
-  token: string,
+  user: UserInterface;
+  token: string;
 }
 
 export interface SignupInterface {
-  fullName: string,
-  email: string,
-  phone: string | number,
-  password: string,
-  confrimPassword: string,
-  permissions?: PermissionInterface,
-  organization: string,
+  fullName: string;
+  email: string;
+  phone: string | number;
+  password: string;
+  confrimPassword: string;
+  permissions?: PermissionInterface;
+  organization: string;
 }

@@ -41,7 +41,9 @@
               "./node_modules/@ng-vibe/dialog/styles/styles.css"
 
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/flowbite/dist/flowbite.min.js"
+            ]
           },
           "configurations": {
             "production": {

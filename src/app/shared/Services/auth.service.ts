@@ -17,6 +17,7 @@ const httpOptions = {
 })
 export class AuthService {
   private apiUrl = `${environment.apiRootUrl}auth/login`;
+  private apiUrll = `${environment.apiRootUrl}auth`;
   private isLoggedInSource = new BehaviorSubject<boolean>(false);
   authStatusChanged = this.isLoggedInSource.asObservable();
 
@@ -59,8 +60,12 @@ export class AuthService {
     return this.httpClient.get<Organization[]>(url);
   }
   getAllUsers(): Observable<UserInterface[]> {
-    const url = `${this.apiUrl}`;
+    const url = `${this.apiUrll}`;
     return this.httpClient.get<UserInterface[]>(url);
+  }
+  createUser(data: any): Observable<any> {
+    const url = `${this.apiUrll}/signup`;
+    return this.httpClient.post<any>(url, data);
   }
 
   private checkLoginStatus() {
