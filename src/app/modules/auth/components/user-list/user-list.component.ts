@@ -53,11 +53,26 @@ export class UserListComponent {
       (user: UserInterface) => {
         this.toast.success('User created successfully');
         this.toggleModal();
+        this.getAllUsers();
+        this.resetForm();
       },
       (error) => {
         this.toast.error('Error creating user');
         console.log(error);
       }
     );
+
+  }
+  resetForm() {
+    this.userDetails = {
+      fullName: '',
+      id: '',
+      email: '',
+      username: '',
+      phone: '',
+      role: '',
+      createdBy: '',
+      // Reset other fields as needed
+    };
   }
 }
