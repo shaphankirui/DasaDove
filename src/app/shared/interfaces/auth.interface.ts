@@ -27,8 +27,8 @@ export type PermissionType = 'admin' | 'waiter' | 'manager' | 'sales';
 
 export enum UserRolesEnum {
   ADMIN = 'Admin',
-  WAITER = 'Sales',
-  SALES = 'Accountant',
+  SALES = 'Sales',
+  ACCOUNTANT = 'Accountant',
 }
 
 export type permissionAccessType =

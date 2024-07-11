@@ -41,6 +41,14 @@ export class LoginComponent {
         const token = response.access_token; // Assuming the token is in the response
         const userEmail = response.userEmail; // Assuming the token is in the response
         this.authService.login(token, userEmail);
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userEmail', response.userEmail);
+        this.authService.setTokenExpiration();
+        this.authService.checkWhetherSessionHasExpired();
+        // Convert the user object to a JSON string before storing it
+        localStorage.setItem('user', JSON.stringify(response.user));
+        console.log('user logged in', response.user);
+        this.authService.user$.next(response.user);
         this.router.navigate(['/sales']);
         this.toast.success('Login successful');
       },

@@ -3,12 +3,10 @@ import { Injectable } from '@angular/core';
 import { LocalStorageTypes } from '../types/local-storage.types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocalStorageService {
-  constructor(
-    // private encryptionService: EncryptionService,
-  ) { }
+  constructor() {} // private encryptionService: EncryptionService,
 
   // setItem(item: LocalStorageTypes, value: any): Promise<boolean> {
   //   return new Promise<boolean>((resolve) => {
@@ -26,29 +24,25 @@ export class LocalStorageService {
   //   });
   // }
 
-  // setLocalItem(item: LocalStorageTypes, value: any): Promise<boolean> {
-  //   const str = JSON.stringify(value);
-  //   return new Promise<boolean>((resolve, reject) => {
-  //     const encrypted = this.encryptionService.localEncrypt(str);
-  //     localStorage.setItem(item, encrypted);
-  //     resolve(true);
-  //   });
-  // }
+  setLocalItem(item: LocalStorageTypes, value: any): Promise<boolean> {
+    const str = JSON.stringify(value);
+    return new Promise<boolean>((resolve, reject) => {
+      localStorage.setItem(item, str);
+      resolve(true);
+    });
+  }
 
-  // getItem(item: LocalStorageTypes, parse?: boolean): any {
-  //   const localItem = localStorage.getItem(item);
+  getItem(item: LocalStorageTypes, parse?: boolean): any {
+    const localItem = localStorage.getItem(item);
 
-  //   if (!localItem) return '';
-  //   const decryptedItem = this.encryptionService.decrypt(localItem);
+    if (!localItem) return '';
 
-  //   if (parse) {
-  //     return JSON.parse(decryptedItem);
-
-  //   } else {
-  //     return decryptedItem;
-
-  //   }
-  // }
+    if (parse) {
+      return JSON.parse(localItem);
+    } else {
+      return localItem;
+    }
+  }
 
   setRawItem(item: LocalStorageTypes, value: any) {
     return localStorage.setItem(item, value);
@@ -57,7 +51,6 @@ export class LocalStorageService {
   getRawItem(item: LocalStorageTypes) {
     return localStorage.getItem(item);
   }
-
 
   clear(all?: boolean) {
     if (!all) {
