@@ -31,6 +31,10 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
+    console.log(
+      'this the testing of the login gurd value',
+      this.authService.userIsLoggedIn()
+    );
     return this.authService.userIsLoggedIn().pipe(
       map((user: UserInterface | null) => {
         if (!user || !user.email) {

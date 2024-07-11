@@ -23,6 +23,7 @@ import { ShowCustomerComponent } from './modules/customers/components/show-custo
 import { StockListComponent } from './modules/inventory/components/stock-list/stock-list.component';
 import { TransferFromStoreComponent } from './modules/inventory/components/transfer-from-store/transfer-from-store.component';
 import { UserListComponent } from './modules/auth/components/user-list/user-list.component';
+import { DashboardMainComponent } from './modules/dashboard/components/dashboard-main/dashboard-main.component';
 
 const routes: Routes = [
   {
@@ -33,86 +34,93 @@ const routes: Routes = [
       {
         path: 'products',
         component: ShowProductsComponent,
+        canActivate: [AuthGuard],
       },
       {
         path: 'categories',
         component: ShowCategoriesComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'dashbord',
+        component: DashboardMainComponent,
+        canActivate: [AuthGuard],
       },
 
       {
         path: 'inventory',
         component: AddInventoryComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'inventory',
         component: AddInventoryComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'suppliers',
         component: ShowSuplliersComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'sales',
         component: CashSalesComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'invoices',
         component: ShowSalesComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'credit_sales',
         component: ShowCreditSalesComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'sale-reports',
         component: SalesReportsComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'income-reports',
         component: IncomeReportsComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'purchase-reports',
         component: PurchaseReportsComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'credit-reports',
         component: CreditReportsComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'voids-reports',
         component: VoidedSalesReportsComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'customers',
         component: ShowCustomerComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'stock',
         component: StockListComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'transfer-stock',
         component: TransferFromStoreComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
       {
         path: 'users',
         component: UserListComponent,
-        // canActivate: [AuthGuard],
+        canActivate: [AuthGuard],
       },
     ],
   },
@@ -120,7 +128,7 @@ const routes: Routes = [
   {
     path: '',
     component: AuthLayoutComponent,
-    // canActivate: [LoginGuard],
+    canActivate: [LoginGuard],
     children: [
       {
         path: 'login',

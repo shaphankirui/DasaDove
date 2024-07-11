@@ -5,6 +5,7 @@ import { IncomeReportsComponent } from './components/income-reports/income-repor
 import { CreditReportsComponent } from './components/credit-reports/credit-reports.component';
 import { PurchaseReportsComponent } from './components/purchase-reports/purchase-reports.component';
 import { VoidedSalesReportsComponent } from './components/voided-sales-reports/voided-sales-reports.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -17,7 +18,7 @@ import { VoidedSalesReportsComponent } from './components/voided-sales-reports/v
     VoidedSalesReportsComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,FormsModule
   ]
 })
 export class ReportsModule { }

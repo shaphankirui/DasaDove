@@ -17,6 +17,10 @@ export class LoginGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
+    console.log(
+      'this the testing of the login gurd value',
+      this.authService.userIsLoggedIn()
+    );
     if (this.authService.userIsLoggedIn()) {
       return true; // Allow access if user is logged in
     } else {

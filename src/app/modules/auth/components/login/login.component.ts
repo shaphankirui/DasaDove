@@ -41,7 +41,7 @@ export class LoginComponent {
         const token = response.access_token; // Assuming the token is in the response
         const userEmail = response.userEmail; // Assuming the token is in the response
         this.authService.login(token, userEmail);
-        localStorage.setItem('token', response.token);
+        localStorage.setItem('token', response.access_token);
         localStorage.setItem('userEmail', response.userEmail);
         this.authService.setTokenExpiration();
         this.authService.checkWhetherSessionHasExpired();
@@ -49,6 +49,11 @@ export class LoginComponent {
         localStorage.setItem('user', JSON.stringify(response.user));
         console.log('user logged in', response.user);
         this.authService.user$.next(response.user);
+        this.authService.userIsLoggedIn();
+        console.log(
+          'user if it is loged in or not',
+          this.authService.user$.value
+        );
         this.router.navigate(['/sales']);
         this.toast.success('Login successful');
       },

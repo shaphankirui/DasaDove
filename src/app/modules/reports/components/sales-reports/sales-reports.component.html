@@ -1,1 +1,227 @@
-<p>sales-reports works!</p>
+<div class="min-h-screen bg-gray-100 dark:bg-gray-900 p-8">
+  <div
+    class="max-w-6xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden"
+  >
+    <div class="p-6 md:p-8">
+      <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
+        Sales Reports
+      </h2>
+
+      <!-- Report Type Selector -->
+      <div class="mb-6">
+        <label
+          for="reportType"
+          class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+          >Select Report Type:</label
+        >
+        <select
+          id="reportType"
+          [(ngModel)]="reportType"
+          (change)="getSalesReport()"
+          class="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        >
+          <option value="day">Daily</option>
+          <option value="month">Monthly</option>
+          <option value="range">Date Range</option>
+        </select>
+      </div>
+
+      <!-- Date Range Selector -->
+      <div
+        *ngIf="reportType === 'range'"
+        class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+      >
+        <div>
+          <label
+            for="startDate"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >Start Date:</label
+          >
+          <input
+            type="date"
+            id="startDate"
+            [(ngModel)]="startDate"
+            (change)="getSalesReport()"
+            class="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          />
+        </div>
+        <div>
+          <label
+            for="endDate"
+            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+            >End Date:</label
+          >
+          <input
+            type="date"
+            id="endDate"
+            [(ngModel)]="endDate"
+            (change)="getSalesReport()"
+            class="w-full p-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          />
+        </div>
+      </div>
+
+      <!-- Sales Summary -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div class="bg-blue-100 dark:bg-blue-900 p-4 rounded-lg">
+          <h3
+            class="text-lg font-semibold text-blue-800 dark:text-blue-200 mb-2"
+          >
+            Total Income
+          </h3>
+          <p class="text-2xl font-bold text-blue-600 dark:text-blue-300">
+            {{ totalIncome | currency }}
+          </p>
+        </div>
+        <div class="bg-green-100 dark:bg-green-900 p-4 rounded-lg">
+          <h3
+            class="text-lg font-semibold text-green-800 dark:text-green-200 mb-2"
+          >
+            Cash Income
+          </h3>
+          <p class="text-2xl font-bold text-green-600 dark:text-green-300">
+            {{ totalCashIncome | currency }}
+          </p>
+        </div>
+        <div class="bg-purple-100 dark:bg-purple-900 p-4 rounded-lg">
+          <h3
+            class="text-lg font-semibold text-purple-800 dark:text-purple-200 mb-2"
+          >
+            M-Pesa Income
+          </h3>
+          <p class="text-2xl font-bold text-purple-600 dark:text-purple-300">
+            {{ totalMpesaIncome | currency }}
+          </p>
+        </div>
+        <div class="bg-yellow-100 dark:bg-yellow-900 p-4 rounded-lg">
+          <h3
+            class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2"
+          >
+            Bank Income
+          </h3>
+          <p class="text-2xl font-bold text-yellow-600 dark:text-yellow-300">
+            {{ totalBankIncome | currency }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Most Sold Items -->
+      <div class="mb-8">
+        <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
+          Most Sold Items
+        </h3>
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden">
+          <table
+            class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
+          >
+            <thead class="bg-gray-100 dark:bg-gray-800">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
+                  Item
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
+                  Quantity Sold
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
+                  Revenue
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+            >
+              <!-- Add ngFor to iterate over most sold items -->
+              <tr *ngFor="let item of mostSoldItems">
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                >
+                  {{ item.name }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                >
+                  {{ item.quantitySold }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                >
+                  {{ item.revenue | currency }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Orders -->
+      <div>
+        <h3 class="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
+          Recent Orders
+        </h3>
+        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg overflow-hidden">
+          <table
+            class="min-w-full divide-y divide-gray-200 dark:divide-gray-600"
+          >
+            <thead class="bg-gray-100 dark:bg-gray-800">
+              <tr>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
+                  Order ID
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
+                  Date
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
+                  Total
+                </th>
+                <th
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                >
+                  Payment Method
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"
+            >
+              <!-- Add ngFor to iterate over recent orders -->
+              <tr *ngFor="let order of recentOrders">
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                >
+                  {{ order.id }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                >
+                  {{ order.date | date }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                >
+                  {{ order.total | currency }}
+                </td>
+                <td
+                  class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-300"
+                >
+                  {{ order.paymentMethod }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

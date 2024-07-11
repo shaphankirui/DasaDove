@@ -30,6 +30,10 @@ export class SalesService {
     const url = `${this.apiUrl}`;
     return this.http.get<Sales[]>(url, { headers: this.getHeaders() });
   }
+  getSalesByDateRange(startDate: string, endDate: string): Observable<any> {
+    const url = `${this.apiUrl}/report/range?startDate=${startDate}&endDate=${endDate}`;
+    return this.http.get<any>(url, { headers: this.getHeaders() });
+  }
 
   addSales(sales: Sales): Observable<Sales> {
     const url = `${this.apiUrl}`;

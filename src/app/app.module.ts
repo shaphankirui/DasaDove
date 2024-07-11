@@ -23,9 +23,11 @@ import { BtnLOderComponent } from './shared/Data/components/btn-loder/btn-loder.
 import { CustomersModule } from './modules/customers/customers.module';
 import { LpoModule } from './modules/lpo/lpo.module';
 import { QuotationsModule } from './modules/quotations/quotations.module';
+import { DashboardMainComponent } from './modules/dashboard/components/dashboard-main/dashboard-main.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
-  declarations: [AppComponent, AuthComponent, ModalComponent],
+  declarations: [AppComponent, AuthComponent, ModalComponent,DashboardMainComponent],
 
   imports: [
     BrowserModule,
@@ -45,6 +47,7 @@ import { QuotationsModule } from './modules/quotations/quotations.module';
     FormsModule,
     HttpClientModule,
     BtnLOderComponent,
+    NgApexchartsModule
   ],
   providers: [provideNgVibeDialog()],
   bootstrap: [AppComponent],
