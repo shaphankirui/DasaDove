@@ -1,58 +1,62 @@
-<div class="bg-gray-900 text-white min-h-screen p-6">
-    <h1 class="text-3xl font-bold mb-6">Point of Sale Dashboard</h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Sales Summary Card -->
-      <div class="bg-gray-800 rounded-lg p-6">
-        <h2 class="text-xl font-semibold mb-4">Sales Summary</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <p class="text-gray-400">Today's Sales</p>
-            <p class="text-2xl font-bold">$1,234</p>
-          </div>
-          <div>
-            <p class="text-gray-400">This Week</p>
-            <p class="text-2xl font-bold">$12,345</p>
-          </div>
+<div *ngIf="dataLoading" class="bg-gray-900 text-white min-h-screen p-6">
+  <h1 class="text-3xl font-bold mb-6">Point of Sale Dashboard</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Sales Summary Card -->
+    <div class="bg-gray-800 rounded-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">Sales Summary</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-gray-400">Today's Sales</p>
+          <p class="text-2xl font-bold">${{ todaySales }}</p>
         </div>
-      </div>
-      
-      <!-- Inventory Summary Card -->
-      <div class="bg-gray-800 rounded-lg p-6">
-        <h2 class="text-xl font-semibold mb-4">Inventory Summary</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <p class="text-gray-400">Low Stock Items</p>
-            <p class="text-2xl font-bold">5</p>
-          </div>
-          <div>
-            <p class="text-gray-400">Out of Stock</p>
-            <p class="text-2xl font-bold">2</p>
-          </div>
+        <div>
+          <p class="text-gray-400">This Week</p>
+          <p class="text-2xl font-bold">${{ thisWeekSales }}</p>
         </div>
       </div>
     </div>
-    
-    <!-- Charts -->
-    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div class="bg-gray-800 rounded-lg p-6">
-        <apx-chart
-          [series]="salesChartOptions.series"
-          [chart]="salesChartOptions.chart"
-          [xaxis]="salesChartOptions.xaxis"
-          [dataLabels]="salesChartOptions.dataLabels"
-          [grid]="salesChartOptions.grid"
-          [stroke]="salesChartOptions.stroke"
-          [title]="salesChartOptions.title"
-        ></apx-chart>
-      </div>
-      <div class="bg-gray-800 rounded-lg p-6">
-        <apx-chart
-          [series]="inventoryChartOptions.series"
-          [chart]="inventoryChartOptions.chart"
-          [xaxis]="inventoryChartOptions.xaxis"
-          [title]="inventoryChartOptions.title"
-        ></apx-chart>
+
+    <!-- Inventory Summary Card -->
+    <div class="bg-gray-800 rounded-lg p-6">
+      <h2 class="text-xl font-semibold mb-4">Inventory Summary</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <p class="text-gray-400">Low Stock Items</p>
+          <p class="text-2xl font-bold">{{ lowStockItems }}</p>
+        </div>
+        <div>
+          <p class="text-gray-400">Out of Stock</p>
+          <p class="text-2xl font-bold">{{ outOfStockItems }}</p>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Charts -->
+  <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="bg-gray-800 rounded-lg p-6">
+      <apx-chart
+        [series]="salesChartOptions.series"
+        [chart]="salesChartOptions.chart"
+        [xaxis]="salesChartOptions.xaxis"
+        [dataLabels]="salesChartOptions.dataLabels"
+        [grid]="salesChartOptions.grid"
+        [stroke]="salesChartOptions.stroke"
+        [title]="salesChartOptions.title"
+      ></apx-chart>
+    </div>
+    <!-- <div class="bg-gray-800 rounded-lg p-6">
+      <apx-chart
+        [series]="inventoryChartOptions.series"
+        [chart]="inventoryChartOptions.chart"
+        [xaxis]="inventoryChartOptions.xaxis"
+        [title]="inventoryChartOptions.title"
+      ></apx-chart>
+    </div> -->
+    <div class="pie-chart-container">
+      <h3>Payment Method Distribution (This Month)</h3>
+      <app-pie-chart [data]="pieChartData"></app-pie-chart>
+    </div>
+  </div>
+</div>

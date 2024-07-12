@@ -25,9 +25,16 @@ import { LpoModule } from './modules/lpo/lpo.module';
 import { QuotationsModule } from './modules/quotations/quotations.module';
 import { DashboardMainComponent } from './modules/dashboard/components/dashboard-main/dashboard-main.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { PieChartComponent } from './modules/dashboard/components/pie-chart/pie-chart.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthComponent, ModalComponent,DashboardMainComponent],
+  declarations: [
+    AppComponent,
+    AuthComponent,
+    ModalComponent,
+    DashboardMainComponent,
+    PieChartComponent,
+  ],
 
   imports: [
     BrowserModule,
@@ -47,7 +54,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     FormsModule,
     HttpClientModule,
     BtnLOderComponent,
-    NgApexchartsModule
+    NgApexchartsModule,
   ],
   providers: [provideNgVibeDialog()],
   bootstrap: [AppComponent],

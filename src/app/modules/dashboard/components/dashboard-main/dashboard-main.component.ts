@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -9,6 +9,8 @@ import {
   ApexGrid,
   ApexNonAxisChartSeries,
 } from 'ng-apexcharts';
+import { SalesService } from '../../../../shared/Services/sales.service';
+import { ProductService } from '../../../../shared/Services/product.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -25,11 +27,27 @@ export type ChartOptions = {
   templateUrl: './dashboard-main.component.html',
   styleUrl: './dashboard-main.component.scss',
 })
-export class DashboardMainComponent {
+export class DashboardMainComponent implements OnInit {
+  totalCashIncome: number = 0;
+  totalMpesaIncome: number = 0;
+  totalBankIncome: number = 0;
+  dataLoading: boolean = false;
   public salesChartOptions: ChartOptions;
   public inventoryChartOptions: ChartOptions;
+  pieChartData: any = {
+    series: [],
+    labels: ['Cash', 'Mpesa', 'Bank'],
+  };
 
-  constructor() {
+  public todaySales: number | null = null;
+  public thisWeekSales: number | null = null;
+  public lowStockItems: number | null = null;
+  public outOfStockItems: number | null = null;
+
+  constructor(
+    private salesService: SalesService,
+    private productService: ProductService
+  ) {
     this.salesChartOptions = {
       series: [
         {
@@ -118,5 +136,46 @@ export class DashboardMainComponent {
         },
       },
     };
+  }
+
+  ngOnInit() {
+    this.fetchSalesSummary();
+    this.fetchInventorySummary();
+  }
+
+  fetchSalesSummary() {
+    const today = new Date().toISOString().split('T')[0];
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split('T')[0];
+
+    this.salesService.getSalesByDateRange(today, today).subscribe((data) => {
+      this.todaySales = data.totalEarnings;
+      this.totalCashIncome = data.totalCashPaid;
+      this.totalMpesaIncome = data.totalMpesaPaid;
+      this.totalBankIncome = data.totalBankPaid;
+      this.pieChartData.series = [
+        this.totalCashIncome,
+        this.totalMpesaIncome,
+        this.totalBankIncome,
+      ];
+      this.pieChartData.labels = ['Cash', 'Mpesa', 'Bank'];
+      this.dataLoading = true;
+    });
+
+    this.salesService.getSalesByDateRange(weekAgo, today).subscribe((data) => {
+      this.thisWeekSales = data.totalEarnings;
+    });
+  }
+
+  fetchInventorySummary() {
+    this.productService.getAllProducts().subscribe((products) => {
+      this.lowStockItems = products.filter(
+        (product) => product.quantity! < 1000
+      ).length;
+      this.outOfStockItems = products.filter(
+        (product) => product.quantity === 0
+      ).length;
+    });
   }
 }
