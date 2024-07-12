@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -7,13 +7,12 @@ import {
   ApexTitleSubtitle,
   ApexStroke,
   ApexGrid,
-  ApexNonAxisChartSeries,
 } from 'ng-apexcharts';
 import { SalesService } from '../../../../shared/Services/sales.service';
 import { ProductService } from '../../../../shared/Services/product.service';
 
 export type ChartOptions = {
-  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
+  series: ApexAxisChartSeries;
   chart: ApexChart;
   xaxis: ApexXAxis;
   dataLabels: ApexDataLabels;
@@ -52,7 +51,7 @@ export class DashboardMainComponent implements OnInit {
       series: [
         {
           name: 'Sales',
-          data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+          data: [],
         },
       ],
       chart: {
@@ -80,19 +79,9 @@ export class DashboardMainComponent implements OnInit {
         },
       },
       xaxis: {
-        categories: [
-          'Jan',
-          'Feb',
-          'Mar',
-          'Apr',
-          'May',
-          'Jun',
-          'Jul',
-          'Aug',
-          'Sep',
-        ],
+        categories: [],
       },
-    };
+    } as ChartOptions;
 
     this.inventoryChartOptions = {
       series: [
@@ -135,7 +124,7 @@ export class DashboardMainComponent implements OnInit {
           opacity: 0.5,
         },
       },
-    };
+    } as ChartOptions;
   }
 
   ngOnInit() {
@@ -144,28 +133,56 @@ export class DashboardMainComponent implements OnInit {
   }
 
   fetchSalesSummary() {
-    const today = new Date().toISOString().split('T')[0];
-    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
-      .toISOString()
-      .split('T')[0];
+    const today = new Date();
+    const dates: string[] = [];
+    const salesData: number[] = [];
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
-    this.salesService.getSalesByDateRange(today, today).subscribe((data) => {
-      this.todaySales = data.totalEarnings;
-      this.totalCashIncome = data.totalCashPaid;
-      this.totalMpesaIncome = data.totalMpesaPaid;
-      this.totalBankIncome = data.totalBankPaid;
-      this.pieChartData.series = [
-        this.totalCashIncome,
-        this.totalMpesaIncome,
-        this.totalBankIncome,
-      ];
-      this.pieChartData.labels = ['Cash', 'Mpesa', 'Bank'];
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(today.getDate() - i);
+      dates.push(date.toISOString().split('T')[0]);
+    }
+
+    const fetchSalesForDate = (date: string) => {
+      return new Promise<number>((resolve) => {
+        this.salesService.getSalesByDateRange(date, date).subscribe((data) => {
+          resolve(data.totalEarnings || 0);
+        });
+      });
+    };
+
+    const fetchAllSalesData = async () => {
+      for (const date of dates) {
+        const sales = await fetchSalesForDate(date);
+        salesData.push(sales);
+      }
+
+      this.salesChartOptions.series[0].data = salesData;
+      this.salesChartOptions.xaxis.categories = dates;
+      this.thisWeekSales = salesData.reduce((a, b) => a + b, 0);
       this.dataLoading = true;
-    });
+    };
 
-    this.salesService.getSalesByDateRange(weekAgo, today).subscribe((data) => {
-      this.thisWeekSales = data.totalEarnings;
-    });
+    fetchAllSalesData();
+
+    this.salesService
+      .getSalesByDateRange(
+        today.toISOString().split('T')[0],
+        today.toISOString().split('T')[0]
+      )
+      .subscribe((data) => {
+        this.todaySales = data.totalEarnings;
+        this.totalCashIncome = data.totalCashPaid;
+        this.totalMpesaIncome = data.totalMpesaPaid;
+        this.totalBankIncome = data.totalBankPaid;
+        this.pieChartData.series = [
+          this.totalCashIncome,
+          this.totalMpesaIncome,
+          this.totalBankIncome,
+        ];
+        this.pieChartData.labels = ['Cash', 'Mpesa', 'Bank'];
+      });
   }
 
   fetchInventorySummary() {
