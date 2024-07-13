@@ -4,6 +4,7 @@ import { SalesService } from '../../../Services/sales.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { AuthService } from '../../../Services/auth.service';
 import { Router } from '@angular/router';
+import { CreditSaleService } from '../../../Services/credit-sale.service';
 
 @Component({
   selector: 'app-modal',
@@ -13,6 +14,7 @@ import { Router } from '@angular/router';
 export class ModalComponent {
   dialogRemoteControl: DialogRemoteControl = inject(DialogRemoteControl);
   salesService = inject(SalesService);
+  creditSalesService = inject(CreditSaleService);
   toast = inject(HotToastService);
   authService = inject(AuthService);
   router = inject(Router);

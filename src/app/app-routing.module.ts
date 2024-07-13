@@ -24,6 +24,7 @@ import { StockListComponent } from './modules/inventory/components/stock-list/st
 import { TransferFromStoreComponent } from './modules/inventory/components/transfer-from-store/transfer-from-store.component';
 import { UserListComponent } from './modules/auth/components/user-list/user-list.component';
 import { DashboardMainComponent } from './modules/dashboard/components/dashboard-main/dashboard-main.component';
+import { MakeCreditSalesComponent } from './modules/sales/components/credit sales/make-credit-sales/make-credit-sales.component';
 
 const routes: Routes = [
   {
@@ -42,7 +43,7 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'dashbord',
+        path: 'dashboard',
         component: DashboardMainComponent,
         canActivate: [AuthGuard],
       },
@@ -75,6 +76,11 @@ const routes: Routes = [
       {
         path: 'credit_sales',
         component: ShowCreditSalesComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'make-credit-sale',
+        component: MakeCreditSalesComponent,
         canActivate: [AuthGuard],
       },
       {

@@ -8,6 +8,7 @@ import { MakeCreditSalesPayentsComponent } from './components/credit sales/make-
 import { ShowSalesComponent } from './components/show-sales/show-sales.component';
 import { LoaderComponent } from '../../shared/Data/components/loader/loader.component';
 import { BtnLOderComponent } from '../../shared/Data/components/btn-loder/btn-loder.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,12 @@ import { BtnLOderComponent } from '../../shared/Data/components/btn-loder/btn-lo
     MakeCreditSalesPayentsComponent,
     ShowSalesComponent,
   ],
-  imports: [CommonModule, FormsModule, LoaderComponent, BtnLOderComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    LoaderComponent,
+    BtnLOderComponent,
+    RouterModule,
+  ],
 })
 export class SalesModule {}

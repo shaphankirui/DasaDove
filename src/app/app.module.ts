@@ -14,7 +14,6 @@ import { MainLayoutComponent } from './modules/layout/components/main-layout/mai
 import { SurpliersModule } from './modules/surpliers/surpliers.module';
 import { AuthLayoutComponent } from './modules/layout/components/auth-layout/auth-layout.component';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
-import { SalesModule } from './modules/sales/sales.module';
 import { LoaderComponent } from './shared/Data/components/loader/loader.component';
 import { provideNgVibeDialog } from '@ng-vibe/dialog';
 import { AuthComponent } from './shared/Data/components/auth/auth.component';
@@ -26,6 +25,8 @@ import { QuotationsModule } from './modules/quotations/quotations.module';
 import { DashboardMainComponent } from './modules/dashboard/components/dashboard-main/dashboard-main.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { PieChartComponent } from './modules/dashboard/components/pie-chart/pie-chart.component';
+import { CreditAuthComponent } from './shared/Data/components/credit-auth/credit-auth.component';
+import { SalesModule } from './modules/sales/sales.module';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { PieChartComponent } from './modules/dashboard/components/pie-chart/pie-
     ModalComponent,
     DashboardMainComponent,
     PieChartComponent,
+    CreditAuthComponent,
   ],
 
   imports: [
@@ -44,11 +46,11 @@ import { PieChartComponent } from './modules/dashboard/components/pie-chart/pie-
     LayoutModule,
     InventoryModule,
     DashboardModule,
-    SalesModule,
     CustomersModule,
     LpoModule,
     QuotationsModule,
     SurpliersModule,
+    SalesModule,
     ReportsModule,
     ReactiveFormsModule,
     FormsModule,
