@@ -1,6 +1,8 @@
 import { Component, HostListener } from '@angular/core';
 import { Sales } from '../../../../shared/interfaces/sales.interface';
 import { SalesService } from '../../../../shared/Services/sales.service';
+import { AppearanceAnimation, DialogRemoteControl, DisappearanceAnimation } from '@ng-vibe/dialog';
+import { RefundComponent } from '../refund/refund.component';
 
 @Component({
   selector: 'app-show-sales',
@@ -8,8 +10,12 @@ import { SalesService } from '../../../../shared/Services/sales.service';
   styleUrl: './show-sales.component.scss',
 })
 export class ShowSalesComponent {
+  private dialog: DialogRemoteControl = new DialogRemoteControl(
+    RefundComponent
+  );
   sales: Sales[] = [];
   selectedShift: string = '';
+  selectedDay: string = '';
   dropdownOpen: boolean = false;
   searchTerm: string = '';
   shifts: string[] = [
@@ -52,9 +58,27 @@ export class ShowSalesComponent {
     }
   }
   getSales(): void {
-    this.salesService.getAllSales().subscribe((sales) => {
-      this.sales = sales;
-      console.log('the sales gotten from the api', sales);
+    const today = new Date();
+    const stringDate = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    const date = this.selectedDay || stringDate;
+    this.salesService.getSalesByDateRange(date, date).subscribe((sales) => {
+      this.sales = sales.orders;
+      // console.log('the sales gotten from the api', sales);
     });
+  }
+  
+  openDialog(optionalPayload?: any) {
+    this.dialog.options = {
+      width: '1000px',
+      height: '100vh',
+      showOverlay: true,
+      animationIn: AppearanceAnimation.ZOOM_IN,
+      animationOut: DisappearanceAnimation.ZOOM_OUT,
+    };
+
+    this.dialog.openDialog(optionalPayload).subscribe((resp) => {
+      console.log('Response from dialog content:', resp);
+    });
+    // this.printReceipt(sales);
   }
 }

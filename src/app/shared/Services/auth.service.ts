@@ -119,7 +119,7 @@ export class AuthService {
       setTimeout(() => {
         this.toast.info(notification);
         this.sessionHasExpired.next(true);
-        this.logout();
+        this.logout(true);
       }, delay);
     } else {
       this.sessionHasExpired.next(true);

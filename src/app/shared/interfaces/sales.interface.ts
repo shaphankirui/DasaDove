@@ -18,3 +18,15 @@ export interface Sales {
   createdAt?: Date;
   mpesaTransactionId?: string;
 }
+export interface RefundItem {
+  id: number;
+  quantity: number;
+}
+
+export interface RefundDto {
+  orderId: number;
+  refundItems: RefundItem[];
+  totalRefund: number;
+  refundPaymentMethod: string;
+  refundedBy: string;
+}

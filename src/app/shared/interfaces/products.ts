@@ -1,4 +1,5 @@
 export interface Product {
+  selectedItems?: any;
   pax: any;
   discount: number;
   id: number;

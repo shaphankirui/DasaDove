@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../Environments/environments';
-import { Sales } from '../interfaces/sales.interface';
+import { RefundDto, Sales } from '../interfaces/sales.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -49,6 +49,10 @@ export class SalesService {
     return this.http.put(`${this.apiUrl}/${id}`, data, {
       headers: this.getHeaders(),
     });
+  }
+  refundSale(refundDto: RefundDto): Observable<any> {
+    const url = `${this.apiUrl}/refund`;
+    return this.http.post(url, refundDto);
   }
 
   deleteSales(id: number): Observable<any> {

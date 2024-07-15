@@ -1,5 +1,5 @@
 <section class="container px-4 mx-auto">
-  <div class="relative inline-block text-left">
+  <!-- <div class="relative inline-block text-left">
     <div>
       <button
         type="button"
@@ -55,6 +55,20 @@
         </ng-container>
       </div>
     </div>
+  </div> -->
+  <div>
+    <label for="Birthday" class="block text-sm text-gray-500 dark:text-gray-300"
+      >Select Day</label
+    >
+
+    <input
+      name="day"
+      [(ngModel)]="selectedDay"
+      (input)="getSales()"
+      type="date"
+      placeholder="John Doe"
+      class="block mt-2 w-[20%] placeholder-gray-400/70 dark:placeholder-gray-500 rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-gray-700 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-blue-300"
+    />
   </div>
 
   <div class="sm:flex sm:items-center sm:justify-between">
@@ -69,7 +83,8 @@
       </div>
 
       <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-        These are the sales made by your customers.
+        These are the sales made by your customers on
+        {{ selectedDay || "Today" }}.
       </p>
     </div>
 
@@ -104,6 +119,7 @@
       </button>
 
       <button
+        routerLink="/sales"
         class="flex items-center justify-center w-1/2 px-5 py-2 text-sm tracking-wide text-white transition-colors duration-200 bg-blue-500 rounded-lg shrink-0 sm:w-auto gap-x-2 hover:bg-blue-600 dark:hover:bg-blue-500 dark:bg-blue-600"
       >
         <svg
@@ -148,6 +164,7 @@
         Refunded
       </button>
       <button
+        routerLink="/credit_sales"
         class="px-5 py-2 text-xs font-medium text-gray-600 transition-colors duration-200 sm:text-sm dark:hover:bg-gray-800 dark:text-gray-300 hover:bg-gray-100"
       >
         Credit Sales
@@ -359,6 +376,7 @@
                 <td class="px-4 py-4 text-sm whitespace-nowrap">
                   <div class="flex items-center gap-x-6">
                     <button
+                      (click)="openDialog(sale)"
                       class="text-gray-500 transition-colors duration-200 dark:hover:text-indigo-500 dark:text-gray-300 hover:text-indigo-500 focus:outline-none"
                     >
                       Refund
@@ -379,7 +397,7 @@
     </div>
   </div>
 
-  <div class="flex items-center justify-between mt-6">
+  <!-- <div class="flex items-center justify-between mt-6">
     <a
       href="#"
       class="flex items-center px-5 py-2 text-sm text-gray-700 capitalize transition-colors duration-200 bg-white border rounded-md gap-x-2 hover:bg-gray-100 dark:bg-gray-900 dark:text-gray-200 dark:border-gray-700 dark:hover:bg-gray-800"
@@ -461,5 +479,5 @@
         />
       </svg>
     </a>
-  </div>
+  </div> -->
 </section>
