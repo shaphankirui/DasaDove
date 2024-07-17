@@ -52,7 +52,7 @@ export class SalesService {
   }
   refundSale(refundDto: RefundDto): Observable<any> {
     const url = `${this.apiUrl}/refund`;
-    return this.http.post(url, refundDto);
+    return this.http.post(url, refundDto, { headers: this.getHeaders() });
   }
 
   deleteSales(id: number): Observable<any> {

@@ -67,10 +67,12 @@ export class RefundComponent extends ModalComponent {
     const existingRefundedItem = this.refundedItems.find(
       (item) => item.id === product.id
     );
+    console.log('Existing items', existingRefundedItem);
 
-    const originalProduct = this.Sale.Items.find(
+    const originalProduct = this.Sale.items.find(
       (item: Product) => item.id === product.id
     );
+    console.log('Original product', originalProduct);
 
     if (!originalProduct) return;
 

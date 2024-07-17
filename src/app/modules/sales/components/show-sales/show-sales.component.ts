@@ -1,7 +1,11 @@
 import { Component, HostListener } from '@angular/core';
 import { Sales } from '../../../../shared/interfaces/sales.interface';
 import { SalesService } from '../../../../shared/Services/sales.service';
-import { AppearanceAnimation, DialogRemoteControl, DisappearanceAnimation } from '@ng-vibe/dialog';
+import {
+  AppearanceAnimation,
+  DialogRemoteControl,
+  DisappearanceAnimation,
+} from '@ng-vibe/dialog';
 import { RefundComponent } from '../refund/refund.component';
 
 @Component({
@@ -63,10 +67,18 @@ export class ShowSalesComponent {
     const date = this.selectedDay || stringDate;
     this.salesService.getSalesByDateRange(date, date).subscribe((sales) => {
       this.sales = sales.orders;
-      // console.log('the sales gotten from the api', sales);
+      console.log('the sales gotten from the api', this.sales);
     });
   }
-  
+  parseItems(items: any): any[] {
+    try {
+      return JSON.parse(items);
+    } catch (error) {
+      console.error('Error parsing items:', error);
+      return [];
+    }
+  }
+
   openDialog(optionalPayload?: any) {
     this.dialog.options = {
       width: '1000px',
