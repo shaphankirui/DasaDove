@@ -1,0 +1,112 @@
+<div class="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-3xl font-extrabold text-center mb-8">Add Quotation</h2>
+    <form (ngSubmit)="onSubmit()" [formGroup]="quotationForm" class="space-y-6">
+      <div>
+        <label for="referenceNumber" class="block text-sm font-medium"
+          >Reference Number</label
+        >
+        <input
+          type="text"
+          id="referenceNumber"
+          formControlName="referenceNumber"
+          class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+        />
+      </div>
+
+      <div>
+        <label for="supplierId" class="block text-sm font-medium"
+          >Supplier</label
+        >
+        <select
+          id="supplierId"
+          formControlName="supplierId"
+          class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+        >
+          <option [ngValue]="null" disabled>Select a supplier</option>
+          <option *ngFor="let supplier of suppliers" [ngValue]="supplier.id">
+            {{ supplier.name }}
+          </option>
+        </select>
+      </div>
+
+      <div formArrayName="items" class="space-y-4">
+        <h3 class="text-lg font-medium">Items</h3>
+        <div
+          *ngFor="let item of itemsFormArray.controls; let i = index"
+          [formGroupName]="i"
+          class="flex space-x-4"
+        >
+          <div class="flex-grow">
+            <select
+              formControlName="productId"
+              class="block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            >
+              <option [ngValue]="null" disabled>Select a product</option>
+              <option *ngFor="let product of products" [ngValue]="product.id">
+                {{ product.name }}
+              </option>
+            </select>
+          </div>
+          <div class="w-24">
+            <input
+              type="number"
+              formControlName="quantity"
+              placeholder="Quantity"
+              class="block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            />
+          </div>
+          <button
+            type="button"
+            (click)="removeItem(i)"
+            class="text-red-500 hover:text-red-600"
+          >
+            Remove
+          </button>
+        </div>
+        <button
+          type="button"
+          (click)="addItem()"
+          class="text-indigo-500 hover:text-indigo-600"
+        >
+          Add Item
+        </button>
+      </div>
+
+      <div>
+        <label for="totalAmount" class="block text-sm font-medium"
+          >Total Amount</label
+        >
+        <input
+          type="number"
+          id="totalAmount"
+          formControlName="totalAmount"
+          class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+        />
+      </div>
+
+      <div>
+        <label for="status" class="block text-sm font-medium">Status</label>
+        <select
+          id="status"
+          formControlName="status"
+          class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+        >
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+
+      <div>
+        <button
+          type="submit"
+          [disabled]="!quotationForm.valid"
+          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+        >
+          Add Quotation
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -25,6 +25,8 @@ import { TransferFromStoreComponent } from './modules/inventory/components/trans
 import { UserListComponent } from './modules/auth/components/user-list/user-list.component';
 import { DashboardMainComponent } from './modules/dashboard/components/dashboard-main/dashboard-main.component';
 import { MakeCreditSalesComponent } from './modules/sales/components/credit sales/make-credit-sales/make-credit-sales.component';
+import { AddQuatationsComponent } from './modules/quotations/components/add-quatations/add-quatations.component';
+import { AddLpoComponent } from './modules/lpo/components/add-lpo/add-lpo.component';
 
 const routes: Routes = [
   {
@@ -126,6 +128,16 @@ const routes: Routes = [
       {
         path: 'users',
         component: UserListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'quotations',
+        component: AddQuatationsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'lpo',
+        component: AddLpoComponent,
         canActivate: [AuthGuard],
       },
     ],
