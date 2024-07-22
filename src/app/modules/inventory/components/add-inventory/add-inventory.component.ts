@@ -10,7 +10,7 @@ import { Inventory } from '../../../../shared/interfaces/inventory.interface';
 import { Supplier } from '../../../../shared/interfaces/supplier.interface';
 import { SuppliersService } from '../../../../shared/Services/suppliers.service';
 interface PurchaseData {
-  product_id: number;
+  product_id: number | string;
   quantity: number | undefined;
   buying_price: number | undefined;
   total: number;
@@ -163,7 +163,7 @@ export class AddInventoryComponent {
     // Create an observable for each product purchase
     for (const product of this.selectedProducts) {
       const purchaseData: PurchaseData = {
-        product_id: product.id,
+        product_id: product.id.toString(),
         quantity: product.quantityToAdd,
         buying_price: product.buying_price,
         total: product.quantityToAdd! * product.buying_price!,
@@ -198,6 +198,8 @@ export class AddInventoryComponent {
           categoryId: product.categoryId,
           price: product.price,
           description: product.description,
+          productIdNumber: product.productIdNumber,
+          reaorderLevel: product.reaorderLevel || 5,
         };
         console.log('quantity to update', purchaseData);
         this.productService.updateProduct(product.id, purchaseData).subscribe(
@@ -219,6 +221,8 @@ export class AddInventoryComponent {
           categoryId: product.categoryId,
           price: product.price,
           description: product.description,
+          productIdNumber: product.productIdNumber,
+          reaorderLevel: product.reaorderLevel || 5,
         };
         console.log('quantity to update', purchaseData);
         this.productService.updateProduct(product.id, purchaseData).subscribe(

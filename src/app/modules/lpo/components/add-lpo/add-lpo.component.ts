@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Product } from '../../../../shared/interfaces/products';
 import { Supplier } from '../../../../shared/interfaces/supplier.interface';
@@ -9,9 +9,9 @@ import { SuppliersService } from '../../../../shared/Services/suppliers.service'
 @Component({
   selector: 'app-add-lpo',
   templateUrl: './add-lpo.component.html',
-  styleUrl: './add-lpo.component.scss'
+  styleUrls: ['./add-lpo.component.scss'],
 })
-export class AddLpoComponent {
+export class AddLpoComponent implements OnInit {
   lpoForm: FormGroup;
   suppliers: Supplier[] = [];
   products: Product[] = [];
@@ -23,11 +23,9 @@ export class AddLpoComponent {
     private productService: ProductService
   ) {
     this.lpoForm = this.fb.group({
-      referenceNumber: ['', Validators.required],
       supplierId: [null, Validators.required],
       items: this.fb.array([]),
       totalAmount: [0, [Validators.required, Validators.min(0)]],
-      status: ['pending', Validators.required]
     });
   }
 
@@ -43,22 +41,22 @@ export class AddLpoComponent {
 
   loadSuppliers() {
     this.suppliersService.getAllSupplier().subscribe(
-      suppliers => this.suppliers = suppliers,
-      error => console.error('Error loading suppliers:', error)
+      (suppliers) => (this.suppliers = suppliers),
+      (error) => console.error('Error loading suppliers:', error)
     );
   }
 
   loadProducts() {
     this.productService.getAllProducts().subscribe(
-      products => this.products = products,
-      error => console.error('Error loading products:', error)
+      (products) => (this.products = products),
+      (error) => console.error('Error loading products:', error)
     );
   }
 
   addItem() {
     const itemForm = this.fb.group({
       productId: [null, Validators.required],
-      quantity: [1, [Validators.required, Validators.min(1)]]
+      quantity: [1, [Validators.required, Validators.min(1)]],
     });
     this.itemsFormArray.push(itemForm);
   }
@@ -70,7 +68,9 @@ export class AddLpoComponent {
   calculateTotal() {
     let total = 0;
     for (const item of this.itemsFormArray.controls) {
-      const product = this.products.find(p => p.id === item.get('productId')?.value);
+      const product = this.products.find(
+        (p) => p.id === item.get('productId')?.value
+      );
       if (product) {
         total += product.price * item.get('quantity')?.value;
       }
@@ -81,13 +81,13 @@ export class AddLpoComponent {
   onSubmit() {
     if (this.lpoForm.valid) {
       const lpoData = this.lpoForm.value;
-      lpoData.items = JSON.stringify(lpoData.items);
+      // lpoData.items = JSON.stringify(lpoData.items);
       this.lpoService.addLpo(lpoData).subscribe(
-        response => {
+        (response) => {
           console.log('LPO added successfully:', response);
           // Reset form or navigate to another page
         },
-        error => console.error('Error adding LPO:', error)
+        (error) => console.error('Error adding LPO:', error)
       );
     }
   }

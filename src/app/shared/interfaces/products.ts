@@ -1,4 +1,6 @@
 export interface Product {
+  reaorderLevel?: any;
+  productIdNumber?: any;
   selectedItems?: number;
   pax: any;
   discount: number;

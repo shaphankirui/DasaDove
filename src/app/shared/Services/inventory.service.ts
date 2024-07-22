@@ -17,7 +17,7 @@ export class InventoryService {
     private localStorageService: LocalStorageService
   ) {
     this.savedOrg = this.localStorageService.getSavedOrgId();
-    this.apiUrl = `${environment.apiRootUrl}/organizations/${this.savedOrg}/inventory`;
+    this.apiUrl = `${environment.apiRootUrl}inventory`;
   }
 
   getAllInventorys(): Observable<Inventory[]> {

@@ -27,6 +27,8 @@ import { DashboardMainComponent } from './modules/dashboard/components/dashboard
 import { MakeCreditSalesComponent } from './modules/sales/components/credit sales/make-credit-sales/make-credit-sales.component';
 import { AddQuatationsComponent } from './modules/quotations/components/add-quatations/add-quatations.component';
 import { AddLpoComponent } from './modules/lpo/components/add-lpo/add-lpo.component';
+import { LpoListComponent } from './modules/lpo/components/lpo-list/lpo-list.component';
+import { ApproveLpoComponent } from './modules/lpo/components/approve-lpo/approve-lpo.component';
 
 const routes: Routes = [
   {
@@ -136,8 +138,18 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'lpo',
+        path: 'add-lpo',
         component: AddLpoComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'lpo',
+        component: LpoListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'approve-lpo/:id',
+        component: ApproveLpoComponent,
         canActivate: [AuthGuard],
       },
     ],
