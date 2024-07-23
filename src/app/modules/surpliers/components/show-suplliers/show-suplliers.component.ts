@@ -22,7 +22,7 @@ export class ShowSuplliersComponent implements OnInit {
     this.isModalVisible = !this.isModalVisible;
     this.getAllSupplier();
   }
-  toggleEditModal(id: string) {
+  toggleEditModal(id: any) {
     this.supllierIdToEdit = id;
     this.isEditModalVisible = !this.isEditModalVisible;
     if (id !== null) {
@@ -34,14 +34,15 @@ export class ShowSuplliersComponent implements OnInit {
     this.suppliersService.getAllSupplier().subscribe(
       (data: Supplier[]) => {
         if (searchQuery && searchQuery.trim() !== '') {
-          this.suppliers = data.filter(supplier =>
-            supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            supplier.phone.toLowerCase().includes(searchQuery.toLowerCase())
-            );
-            } else {
-              this.suppliers = data;
-            }
-          },
+          this.suppliers = data.filter(
+            (supplier) =>
+              supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              supplier.phone.toLowerCase().includes(searchQuery.toLowerCase())
+          );
+        } else {
+          this.suppliers = data;
+        }
+      },
       (error: any) => {
         console.log(error);
       }
@@ -49,7 +50,7 @@ export class ShowSuplliersComponent implements OnInit {
   }
 
   onInputChange(): void {
-    console.log("Query changed", this.query);
+    console.log('Query changed', this.query);
     this.getAllSupplier(this.query);
   }
 }

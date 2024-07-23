@@ -1,6 +1,5 @@
-
 export interface Supplier {
-  id: string;
+  id: number | string;
   name: string;
   phone: string;
   totalUnpaidSuppliers: number;

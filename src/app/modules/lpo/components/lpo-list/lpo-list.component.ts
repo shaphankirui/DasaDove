@@ -25,6 +25,8 @@ export class LpoListComponent {
 
   ngOnInit(): void {
     this.loadLpo();
+    this.loadProducts();
+    this.loadSuppliers();
   }
 
   loadLpo() {
@@ -32,6 +34,14 @@ export class LpoListComponent {
       (lpo) => (this.lpo = lpo),
       (error) => console.error('Error loading LPO:', error)
     );
+  }
+
+  approveLpo(lpo: LpoInterface) {
+    if (lpo.status == 'approved') {
+      this.toast.error('LPO already approved');
+      return;
+    }
+    this.router.navigate(['/approve-lpo', lpo.id]);
   }
   loadSuppliers() {
     this.suppliersService.getAllSupplier().subscribe(
@@ -45,11 +55,22 @@ export class LpoListComponent {
       (error) => console.error('Error loading products:', error)
     );
   }
-  approveLpo(lpo: LpoInterface) {
-    if (lpo.status == 'approved') {
-      this.toast.error('LPO already approved');
-      return;
+
+  getProductNameById(id: number): string {
+    const product = this.products.find((p) => p.id === id);
+    if (product) {
+      return product.name;
+    } else {
+      return 'Loading...';
     }
-    this.router.navigate(['/approve-lpo', lpo.id]);
+  }
+
+  getSupplierNameById(id: number): string {
+    const supplier = this.suppliers.find((s) => s.id === id);
+    if (supplier) {
+      return supplier.name;
+    } else {
+      return 'Loading...';
+    }
   }
 }

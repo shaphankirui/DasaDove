@@ -81,7 +81,7 @@ export class ApproveLpoComponent implements OnInit {
 
       this.lpoService.updateLpo(this.lpoId, approvedLpo).subscribe(
         () => {
-          this.addToInventory(approvedLpo);
+          this.addToInventoryAndUpdateProducts(approvedLpo);
           this.router.navigate(['/lpo-list']);
         },
         (error) => console.error('Error approving LPO:', error)
@@ -89,11 +89,11 @@ export class ApproveLpoComponent implements OnInit {
     }
   }
 
-  addToInventory(approvedLpo: any) {
+  addToInventoryAndUpdateProducts(approvedLpo: any) {
     const items = approvedLpo.items;
 
-    console.log('itemsss', items);
     items.forEach((item: { productId: any; quantity: any; price: any }) => {
+      // Add to inventory
       this.inventoryService
         .addInventory({
           product_id: item.productId.toString(),
@@ -107,10 +107,28 @@ export class ApproveLpoComponent implements OnInit {
           () => console.log('Inventory added successfully'),
           (error) => console.error('Error adding to inventory:', error)
         );
-    });
-  }
 
-  updateLpoProductsWithActuallProducts(lpo: LpoInterface) {
-    const products = lpo.items;
+      // Update product quantity
+      this.productService.getProductbyId(item.productId).subscribe(
+        (product) => {
+          const newQuantity = (product.quantity || 0) + item.quantity;
+          console.log('existing quantity:', product.quantity);
+          console.log('quantity to add quantity:', item.quantity);
+          console.log('New quantity:', newQuantity);
+          this.productService
+            .updateProductQuantity(item.productId, newQuantity)
+            .subscribe(
+              () =>
+                console.log(
+                  newQuantity,
+                  'Product quantity updated successfully'
+                ),
+              (error) =>
+                console.error('Error updating product quantity:', error)
+            );
+        },
+        (error) => console.error('Error fetching product:', error)
+      );
+    });
   }
 }

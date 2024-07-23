@@ -37,6 +37,9 @@ export class ProductService {
   updateProduct(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);
   }
+  updateProductQuantity(id: number, quantity: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}/quantity`, { quantity });
+  }
 
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);

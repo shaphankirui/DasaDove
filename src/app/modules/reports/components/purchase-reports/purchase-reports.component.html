@@ -1,1 +1,125 @@
-<p>purchase-reports works!</p>
+<div class="min-h-screen bg-gray-900 text-white p-8">
+  <h1 class="text-3xl font-bold mb-8">Purchase Reports</h1>
+
+  <div class="mb-8 bg-gray-800 p-6 rounded-lg shadow-lg">
+    <h2 class="text-xl font-semibold mb-4">Generate Report</h2>
+    <form (ngSubmit)="generateReport()" class="space-y-4">
+      <div class="flex space-x-4">
+        <div class="flex-1">
+          <label
+            for="reportType"
+            class="block text-sm font-medium text-gray-400 mb-1"
+            >Report Type</label
+          >
+          <select
+            id="reportType"
+            [(ngModel)]="reportType"
+            name="reportType"
+            class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          >
+            <option value="daily">Daily Report</option>
+            <option value="range">Date Range Report</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="reportType === 'daily'">
+        <label
+          for="selectedDate"
+          class="block text-sm font-medium text-gray-400 mb-1"
+          >Select Date</label
+        >
+        <input
+          type="date"
+          id="selectedDate"
+          [(ngModel)]="selectedDate"
+          name="selectedDate"
+          class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        />
+      </div>
+
+      <div *ngIf="reportType === 'range'" class="flex space-x-4">
+        <div class="flex-1">
+          <label
+            for="startDate"
+            class="block text-sm font-medium text-gray-400 mb-1"
+            >Start Date</label
+          >
+          <input
+            type="date"
+            id="startDate"
+            [(ngModel)]="startDate"
+            name="startDate"
+            class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+        <div class="flex-1">
+          <label
+            for="endDate"
+            class="block text-sm font-medium text-gray-400 mb-1"
+            >End Date</label
+          >
+          <input
+            type="date"
+            id="endDate"
+            [(ngModel)]="endDate"
+            name="endDate"
+            class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+          />
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md transition duration-300 ease-in-out"
+      >
+        Generate Report
+      </button>
+    </form>
+  </div>
+
+  <div
+    *ngIf="filteredPurchases.length > 0"
+    class="bg-gray-800 p-6 rounded-lg shadow-lg"
+  >
+    <h2 class="text-xl font-semibold mb-4">Purchase Report</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-400">
+        <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">Product ID</th>
+            <th scope="col" class="px-6 py-3">Quantity</th>
+            <th scope="col" class="px-6 py-3">Buying Price</th>
+            <th scope="col" class="px-6 py-3">Total</th>
+            <th scope="col" class="px-6 py-3">Added By</th>
+            <th scope="col" class="px-6 py-3">Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let purchase of filteredPurchases"
+            class="border-b bg-gray-800 border-gray-700"
+          >
+            <td class="px-6 py-4">
+              {{ getProductNameById(purchase.product_id) }}
+            </td>
+            <td class="px-6 py-4">{{ purchase.quantity }}</td>
+            <td class="px-6 py-4">{{ purchase.buying_price | currency }}</td>
+            <td class="px-6 py-4">{{ purchase.total | currency }}</td>
+            <td class="px-6 py-4">{{ purchase.added_by }}</td>
+            <td class="px-6 py-4">{{ purchase.createdAt | date : "short" }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div
+    *ngIf="filteredPurchases.length > 0"
+    class="mt-8 mb-10 bg-gray-800 p-6 rounded-lg shadow-lg"
+  >
+    <h2 class="text-xl font-semibold mb-4">Summary</h2>
+    <p>Total Purchases: {{ filteredPurchases.length }}</p>
+    <p>Total Amount: {{ getTotalAmount() | currency }}</p>
+  </div>
+</div>
