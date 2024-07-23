@@ -5,6 +5,7 @@ import { Supplier } from '../../../../shared/interfaces/supplier.interface';
 import { LpoService } from '../../../../shared/Services/lpo.service';
 import { ProductService } from '../../../../shared/Services/product.service';
 import { SuppliersService } from '../../../../shared/Services/suppliers.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-add-lpo',
@@ -20,7 +21,8 @@ export class AddLpoComponent implements OnInit {
     private fb: FormBuilder,
     private lpoService: LpoService,
     private suppliersService: SuppliersService,
-    private productService: ProductService
+    private productService: ProductService,
+    private toast: HotToastService
   ) {
     this.lpoForm = this.fb.group({
       supplierId: [null, Validators.required],
@@ -84,10 +86,11 @@ export class AddLpoComponent implements OnInit {
       // lpoData.items = JSON.stringify(lpoData.items);
       this.lpoService.addLpo(lpoData).subscribe(
         (response) => {
-          console.log('LPO added successfully:', response);
+          this.toast.success('LPO added successfully');
+          this.lpoForm.reset();
           // Reset form or navigate to another page
         },
-        (error) => console.error('Error adding LPO:', error)
+        (error) => this.toast.error('Error adding LPO')
       );
     }
   }

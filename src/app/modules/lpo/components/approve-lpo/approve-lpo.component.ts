@@ -6,6 +6,9 @@ import { ProductService } from '../../../../shared/Services/product.service';
 import { InventoryService } from '../../../../shared/Services/inventory.service';
 import { Product } from '../../../../shared/interfaces/products';
 import { LpoInterface } from '../../../../shared/interfaces/lpo.interface';
+import { SuppliersService } from '../../../../shared/Services/suppliers.service';
+import { Supplier } from '../../../../shared/interfaces/supplier.interface';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
   selector: 'app-approve-lpo',
@@ -15,6 +18,8 @@ import { LpoInterface } from '../../../../shared/interfaces/lpo.interface';
 export class ApproveLpoComponent implements OnInit {
   lpoForm: FormGroup;
   lpoId: number = 0;
+  suppliers: Supplier[] = [];
+  products: Product[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -22,7 +27,9 @@ export class ApproveLpoComponent implements OnInit {
     private router: Router,
     private lpoService: LpoService,
     private productService: ProductService,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
+    private suppliersService: SuppliersService,
+    private toast: HotToastService
   ) {
     this.lpoForm = this.fb.group({
       supplierId: ['', Validators.required],
@@ -35,6 +42,38 @@ export class ApproveLpoComponent implements OnInit {
   ngOnInit() {
     this.lpoId = +this.route.snapshot.paramMap.get('id')!;
     this.loadLpo();
+    this.loadProducts();
+    this.loadSuppliers();
+  }
+  loadSuppliers() {
+    this.suppliersService.getAllSupplier().subscribe(
+      (suppliers) => (this.suppliers = suppliers),
+      (error) => console.error('Error loading suppliers:', error)
+    );
+  }
+  loadProducts() {
+    this.productService.getAllProducts().subscribe(
+      (products) => (this.products = products),
+      (error) => console.error('Error loading products:', error)
+    );
+  }
+
+  getProductNameById(id: number): string {
+    const product = this.products.find((p) => p.id === id);
+    if (product) {
+      return product.name;
+    } else {
+      return 'Loading...';
+    }
+  }
+
+  getSupplierNameById(id: number): string {
+    const supplier = this.suppliers.find((s) => s.id === id);
+    if (supplier) {
+      return supplier.name;
+    } else {
+      return 'Loading...';
+    }
   }
 
   loadLpo() {
@@ -77,6 +116,10 @@ export class ApproveLpoComponent implements OnInit {
   approveLpo() {
     if (this.lpoForm.valid) {
       const approvedLpo = this.lpoForm.value;
+      if (approvedLpo.status === 'approved') {
+        this.toast.error('LPO already approved');
+        return;
+      }
       approvedLpo.status = 'approved';
 
       this.lpoService.updateLpo(this.lpoId, approvedLpo).subscribe(
@@ -118,11 +161,14 @@ export class ApproveLpoComponent implements OnInit {
           this.productService
             .updateProductQuantity(item.productId, newQuantity)
             .subscribe(
-              () =>
+              () => {
+                this.toast.success('LPO approved successfully');
+                this.router.navigate(['/lpo']);
                 console.log(
                   newQuantity,
                   'Product quantity updated successfully'
-                ),
+                );
+              },
               (error) =>
                 console.error('Error updating product quantity:', error)
             );

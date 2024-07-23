@@ -1,190 +1,156 @@
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-  <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <div class="flex justify-end pb-2">
-      <!-- Modal toggle -->
-      <button
-        routerLink="/add-lpo"
-        class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button"
-      >
-        Create Lpo
-      </button>
-    </div>
-    <div
-      class="flex items-center justify-between flex-column flex-wrap md:flex-row space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900"
-    >
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg bg-gray-900 p-6">
+  <div class="flex justify-between items-center mb-6">
+    <div class="flex space-x-4">
       <div>
-        <button
-          id="dropdownActionButton"
-          data-dropdown-toggle="dropdownAction"
-          class="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-          type="button"
+        <label
+          for="start-date"
+          class="block text-sm font-medium text-gray-300 mb-1"
+          >Start Date</label
         >
-          <span class="sr-only">Action button</span>
-          Action
-          <svg
-            class="w-2.5 h-2.5 ms-2.5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 10 6"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m1 1 4 4 4-4"
-            />
-          </svg>
-        </button>
-        <!-- Dropdown menu -->
-        <div
-          id="dropdownAction"
-          class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
-        >
-          <ul
-            class="py-1 text-sm text-gray-700 dark:text-gray-200"
-            aria-labelledby="dropdownActionButton"
-          >
-            <li>
-              <a
-                href="#"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >Reward</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >Promote</a
-              >
-            </li>
-            <li>
-              <a
-                href="#"
-                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >Activate account</a
-              >
-            </li>
-          </ul>
-          <div class="py-1">
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-              >Delete User</a
-            >
-          </div>
-        </div>
-      </div>
-      <label for="table-search" class="sr-only">Search</label>
-      <div class="relative">
-        <div
-          class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none"
-        >
-          <svg
-            class="w-4 h-4 text-gray-500 dark:text-gray-400"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
-        </div>
         <input
-          type="text"
-          id="table-search-users"
-          class="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="Search for users"
+          type="date"
+          id="start-date"
+          [(ngModel)]="startDate"
+          class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
         />
       </div>
-    </div>
-    <table
-      class="w-full text-sm text-left mb-9 rtl:text-right text-gray-500 dark:text-gray-400"
-    >
-      <thead
-        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-      >
-        <tr>
-          <th scope="col" class="p-4">
-            <div class="flex items-center">
-              <input
-                id="checkbox-all-search"
-                type="checkbox"
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label for="checkbox-all-search" class="sr-only">checkbox</label>
-            </div>
-          </th>
-          <th scope="col" class="px-6 py-3">ID</th>
-          <th scope="col" class="px-6 py-3">Supplier</th>
-          <th scope="col" class="px-6 py-3">products</th>
-          <th scope="col" class="px-6 py-3">Date</th>
-          <th scope="col" class="px-6 py-3">createdBy</th>
-          <th scope="col" class="px-6 py-3">Status</th>
-          <th scope="col" class="px-6 py-3">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          *ngFor="let lpo of lpo"
-          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+      <div>
+        <label
+          for="end-date"
+          class="block text-sm font-medium text-gray-300 mb-1"
+          >End Date</label
         >
-          <td class="w-4 p-4">
-            <div class="flex items-center">
-              <input
-                id="checkbox-table-search-1"
-                type="checkbox"
-                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-              />
-              <label for="checkbox-table-search-1" class="sr-only"
-                >checkbox</label
-              >
-            </div>
-          </td>
-          <th
-            scope="row"
-            class="px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-          >
-            <div class="ps-3">
-              <div class="text-base font-semibold">{{ lpo.id }}</div>
-            </div>
-          </th>
-          <td class="px-6 py-4">{{ getSupplierNameById(lpo.supplierId) }}</td>
-          <td class="px-6 py-4">
-            <div *ngFor="let product of lpo.items">
-              <div class="text-base font-semibold">
-                {{ getProductNameById(product.productId) }}
-              </div>
-              <div class="text-base font-semibold">{{ product.quantity }}</div>
-            </div>
-          </td>
-          <td class="px-6 py-4">{{ lpo.createdAt }}</td>
-          <td class="px-6 py-4">Shaphan</td>
-          <td class="px-6 py-4">
-            <div class="flex items-center">
-              <div class="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div>
-              {{ lpo.status }}
-            </div>
-          </td>
-          <td class="px-6 py-4">
-            <button
-              (click)="approveLpo(lpo)"
-              class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-            >
-              Approve Lpo
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+        <input
+          type="date"
+          id="end-date"
+          [(ngModel)]="endDate"
+          class="bg-gray-700 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+        />
+      </div>
+      <button
+        (click)="loadLpoForARange()"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-6"
+      >
+        Filter
+      </button>
+    </div>
+    <button
+      routerLink="/add-lpo"
+      class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    >
+      Create LPO
+    </button>
   </div>
+
+  <div class="relative mb-4">
+    <input
+      type="text"
+      id="table-search-users"
+      [(ngModel)]="searchTerm"
+      (input)="onSearch()"
+      class="block p-2 pl-10 w-80 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-700 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+      placeholder="Search for LPOs"
+    />
+    <div
+      class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+    >
+      <svg
+        class="w-5 h-5 text-gray-500 dark:text-gray-400"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        ></path>
+      </svg>
+    </div>
+  </div>
+
+  <table class="w-full text-sm text-left text-gray-400">
+    <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+      <tr>
+        <th scope="col" class="p-4">
+          <div class="flex items-center">
+            <input
+              id="checkbox-all-search"
+              type="checkbox"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+            <label for="checkbox-all-search" class="sr-only">checkbox</label>
+          </div>
+        </th>
+        <th scope="col" class="px-6 py-3">ID</th>
+        <th scope="col" class="px-6 py-3">Supplier</th>
+        <th scope="col" class="px-6 py-3">Products</th>
+        <th scope="col" class="px-6 py-3">Date</th>
+        <th scope="col" class="px-6 py-3">Created By</th>
+        <th scope="col" class="px-6 py-3">Status</th>
+        <th scope="col" class="px-6 py-3">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let lpo of lpo"
+        class="bg-gray-800 border-b border-gray-700 hover:bg-gray-600"
+      >
+        <td class="w-4 p-4">
+          <div class="flex items-center">
+            <input
+              type="checkbox"
+              class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            />
+          </div>
+        </td>
+        <th
+          scope="row"
+          class="px-6 py-4 font-medium text-white whitespace-nowrap"
+        >
+          {{ lpo.id }}
+        </th>
+        <td class="px-6 py-4">{{ getSupplierNameById(lpo.supplierId) }}</td>
+        <td class="px-6 py-4">
+          <div *ngFor="let product of lpo.items">
+            <div class="font-semibold">
+              {{ getProductNameById(product.productId) }}
+            </div>
+            <div class="text-sm">Qty: {{ product.quantity }}</div>
+          </div>
+        </td>
+        <td class="px-6 py-4">{{ lpo.createdAt | date : "short" }}</td>
+        <td class="px-6 py-4">Shaphan</td>
+        <td class="px-6 py-4">
+          <span
+            [ngClass]="{
+              'px-2 py-1 font-semibold leading-tight rounded-full': true,
+              'text-green-700 bg-green-100': lpo.status === 'approved',
+              'text-yellow-700 bg-yellow-100': lpo.status === 'pending',
+              'text-red-700 bg-red-100': lpo.status === 'rejected'
+            }"
+          >
+            {{ lpo.status }}
+          </span>
+        </td>
+        <td class="px-6 py-4">
+          <button
+            *ngIf="lpo.status === 'pending'"
+            (click)="approveLpo(lpo)"
+            class="font-medium text-blue-500 hover:underline mr-2"
+          >
+            Approve
+          </button>
+          <button
+            (click)="printLpo(lpo)"
+            class="font-medium text-blue-500 hover:underline"
+          >
+            Print
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

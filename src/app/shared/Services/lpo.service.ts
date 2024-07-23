@@ -34,6 +34,14 @@ export class LpoService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<LpoInterface>(url);
   }
+  getLposByDateRange(
+    startDate: string,
+    endDate: string
+  ): Observable<LpoInterface[]> {
+    return this.http.get<LpoInterface[]>(`${this.apiUrl}/range`, {
+      params: { startDate, endDate },
+    });
+  }
 
   updateLpo(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);
