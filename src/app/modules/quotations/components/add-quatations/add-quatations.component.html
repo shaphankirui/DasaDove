@@ -1,109 +1,227 @@
-<div class="min-h-screen bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-3xl mx-auto">
-    <h2 class="text-3xl font-extrabold text-center mb-8">Add Quotation</h2>
-    <form (ngSubmit)="onSubmit()" [formGroup]="quotationForm" class="space-y-6">
-      <div>
-        <label for="referenceNumber" class="block text-sm font-medium"
-          >Reference Number</label
-        >
-        <input
-          type="text"
-          id="referenceNumber"
-          formControlName="referenceNumber"
-          class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+<div class="min-h-screen bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+  <div
+    class="max-w-4xl mx-auto bg-gray-800 shadow-md rounded-lg overflow-hidden"
+  >
+    <div class="bg-indigo-800 px-6 py-4 flex items-center">
+      <svg
+        class="h-8 w-8 text-white mr-3"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
         />
-      </div>
+      </svg>
+      <h2 class="text-2xl font-bold text-white">Add Quotation</h2>
+    </div>
+    <form
+      (ngSubmit)="onSubmit()"
+      [formGroup]="quotationForm"
+      class="p-6 space-y-6"
+    >
+      <div class="flex space-x-4">
+        <div class="w-1/2">
+          <label
+            for="customerSearch"
+            class="block text-sm font-medium text-gray-300"
+            >Search Customer</label
+          >
+          <div class="mt-1 relative rounded-md shadow-sm">
+            <div
+              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+            >
+              <svg
+                class="h-5 w-5 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              id="customerSearch"
+              [(ngModel)]="customerSearch"
+              (ngModelChange)="loadCustomers(customerSearch)"
+              [ngModelOptions]="{ standalone: true }"
+              class="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md leading-5 bg-gray-700 text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="Search customers..."
+            />
+          </div>
+        </div>
 
-      <div>
-        <label for="supplierId" class="block text-sm font-medium"
-          >Supplier</label
-        >
-        <select
-          id="supplierId"
-          formControlName="supplierId"
-          class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-        >
-          <option [ngValue]="null" disabled>Select a supplier</option>
-          <option *ngFor="let supplier of suppliers" [ngValue]="supplier.id">
-            {{ supplier.name }}
-          </option>
-        </select>
+        <div class="w-1/2">
+          <label
+            for="supplierId"
+            class="block text-sm font-medium text-gray-300"
+            >Customer</label
+          >
+          <select
+            id="supplierId"
+            formControlName="supplierId"
+            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-gray-700 text-gray-300"
+          >
+            <option [ngValue]="null" disabled>Select a customer</option>
+            <option *ngFor="let customer of customers" [ngValue]="customer.id">
+              {{ customer.fullName }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div formArrayName="items" class="space-y-4">
-        <h3 class="text-lg font-medium">Items</h3>
+        <h3 class="text-lg font-medium text-gray-200 flex items-center">
+          <svg
+            class="h-5 w-5 text-indigo-400 mr-2"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M10 2a4 4 0 00-4 4v1H5a1 1 0 00-.994.89l-1 9A1 1 0 004 18h12a1 1 0 00.994-1.11l-1-9A1 1 0 0015 7h-1V6a4 4 0 00-4-4zm2 5V6a2 2 0 10-4 0v1h4zm-6 3a1 1 0 112 0 1 1 0 01-2 0zm7-1a1 1 0 100 2 1 1 0 000-2z"
+              clip-rule="evenodd"
+            />
+          </svg>
+          Items
+        </h3>
         <div
           *ngFor="let item of itemsFormArray.controls; let i = index"
           [formGroupName]="i"
-          class="flex space-x-4"
+          class="flex items-center space-x-4"
         >
+          <div class="w-1/3">
+            <label [for]="'productSearch' + i" class="sr-only"
+              >Search Product</label
+            >
+            <div class="relative rounded-md shadow-sm">
+              <div
+                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+              >
+                <svg
+                  class="h-5 w-5 text-gray-400"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <input
+                [id]="'productSearch' + i"
+                type="text"
+                [(ngModel)]="productSearch"
+                (ngModelChange)="loadProducts(productSearch)"
+                [ngModelOptions]="{ standalone: true }"
+                class="block w-full pl-10 pr-3 py-2 border border-gray-600 rounded-md leading-5 bg-gray-700 text-gray-300 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Search products..."
+              />
+            </div>
+          </div>
           <div class="flex-grow">
+            <label [for]="'product' + i" class="sr-only">Select Product</label>
             <select
+              [id]="'product' + i"
               formControlName="productId"
-              class="block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+              (change)="updateTotal()"
+              class="block w-full pl-3 pr-10 py-2 text-base border-gray-600 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md bg-gray-700 text-gray-300"
             >
               <option [ngValue]="null" disabled>Select a product</option>
               <option *ngFor="let product of products" [ngValue]="product.id">
-                {{ product.name }}
+                {{ product.name }} - ${{ product.price }}
               </option>
             </select>
           </div>
           <div class="w-24">
+            <label [for]="'quantity' + i" class="sr-only">Quantity</label>
             <input
+              [id]="'quantity' + i"
               type="number"
               formControlName="quantity"
-              placeholder="Quantity"
-              class="block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+              (change)="updateTotal()"
+              placeholder="Qty"
+              class="block w-full border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-700 text-gray-300"
             />
           </div>
           <button
             type="button"
             (click)="removeItem(i)"
-            class="text-red-500 hover:text-red-600"
+            class="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
-            Remove
+            <svg
+              class="h-5 w-5"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
           </button>
         </div>
         <button
           type="button"
           (click)="addItem()"
-          class="text-indigo-500 hover:text-indigo-600"
+          class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         >
+          <svg class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              fill-rule="evenodd"
+              d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+              clip-rule="evenodd"
+            />
+          </svg>
           Add Item
         </button>
       </div>
 
       <div>
-        <label for="totalAmount" class="block text-sm font-medium"
+        <label for="totalAmount" class="block text-sm font-medium text-gray-300"
           >Total Amount</label
         >
-        <input
-          type="number"
-          id="totalAmount"
-          formControlName="totalAmount"
-          class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-        />
-      </div>
-
-      <div>
-        <label for="status" class="block text-sm font-medium">Status</label>
-        <select
-          id="status"
-          formControlName="status"
-          class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-        >
-          <option value="pending">Pending</option>
-          <option value="approved">Approved</option>
-          <option value="rejected">Rejected</option>
-        </select>
+        <div class="mt-1 relative rounded-md shadow-sm">
+          <div
+            class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+          >
+            <span class="text-gray-400 sm:text-sm">$</span>
+          </div>
+          <input
+            type="number"
+            id="totalAmount"
+            formControlName="totalAmount"
+            readonly
+            class="block w-full pl-7 pr-3 py-2 border border-gray-600 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-700 text-gray-300"
+          />
+        </div>
       </div>
 
       <div>
         <button
           type="submit"
           [disabled]="!quotationForm.valid"
-          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+          class="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
         >
+          <svg class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path
+              fill-rule="evenodd"
+              d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+              clip-rule="evenodd"
+            />
+          </svg>
           Add Quotation
         </button>
       </div>
