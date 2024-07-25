@@ -29,6 +29,9 @@ import { AddQuatationsComponent } from './modules/quotations/components/add-quat
 import { AddLpoComponent } from './modules/lpo/components/add-lpo/add-lpo.component';
 import { LpoListComponent } from './modules/lpo/components/lpo-list/lpo-list.component';
 import { ApproveLpoComponent } from './modules/lpo/components/approve-lpo/approve-lpo.component';
+import { ShowQuotationsComponent } from './modules/quotations/components/show-quotations/show-quotations.component';
+import { UpdateQuotationsComponent } from './modules/quotations/components/update-quotations/update-quotations.component';
+import { ApproveQuotationsComponent } from './modules/quotations/components/approve-quotations/approve-quotations.component';
 
 const routes: Routes = [
   {
@@ -133,8 +136,23 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
-        path: 'quotations',
+        path: 'add-quotation',
         component: AddQuatationsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'quotations',
+        component: ShowQuotationsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'update-quotation/:id',
+        component: UpdateQuotationsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'approve-quotation/:id',
+        component: ApproveQuotationsComponent,
         canActivate: [AuthGuard],
       },
       {
