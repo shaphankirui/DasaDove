@@ -11,13 +11,14 @@
     font-family: "Lexend", sans-serif;
   }
 
+  
   .scrollbar-hide::-webkit-scrollbar {
     width: 0;
     background: transparent;
   }
   
   ::-webkit-scrollbar {
-    width: 10px;
+    width: 3px;
   }
   
   ::-webkit-scrollbar-track {

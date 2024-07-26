@@ -84,7 +84,10 @@ export class PurchaseReportsComponent implements OnInit {
   }
 
   getProductNameById(id: number): string {
-    const product = this.products.find((p) => p.id === id);
+    const product = this.products.find((p) => {
+      p.id === id;
+      return p.id;
+    });
     console.log('product goten', id);
     if (product) {
       return product.name;
