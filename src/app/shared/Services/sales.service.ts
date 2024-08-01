@@ -11,9 +11,11 @@ export class SalesService {
   isAuthenticated = new BehaviorSubject<boolean>(false);
 
   private apiUrl: string;
+  private mpesaapiUrl: string;
 
   constructor(private http: HttpClient) {
     this.apiUrl = `${environment.apiRootUrl}orders`;
+    this.mpesaapiUrl = `${environment.apiRootUrl}mpesa/stk-push`;
   }
 
   private getHeaders(): HttpHeaders {
@@ -38,6 +40,10 @@ export class SalesService {
   addSales(sales: Sales): Observable<Sales> {
     const url = `${this.apiUrl}`;
     return this.http.post<Sales>(url, sales, { headers: this.getHeaders() });
+  }
+  mpesaStkPush(data: any): Observable<Sales> {
+    const url = `${this.mpesaapiUrl}`;
+    return this.http.post<Sales>(url, data, { headers: this.getHeaders() });
   }
 
   getSalesbyId(id: number): Observable<Sales> {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ProductService } from '../../../../shared/Services/product.service';
 import { Product } from '../../../../shared/interfaces/products';
 import { SalesService } from '../../../../shared/Services/sales.service';
@@ -23,11 +23,14 @@ interface PaymentMethods {
   styleUrls: ['./cash-sales.component.scss'], // Fixed styleUrl typo
 })
 export class CashSalesComponent {
+  @ViewChild('barcodeInput') barcodeInput!: ElementRef<HTMLInputElement>;
   private dialog: DialogRemoteControl = new DialogRemoteControl(AuthComponent);
   searchQuery: string = '';
   products: Product[] = [];
   productsLoading: boolean = true;
   posting: boolean = false;
+  mpesaPaymentNumber: string = '';
+  sendingMpesaRequest: boolean = false;
   constructor(
     private productService: ProductService,
     private salesService: SalesService,
@@ -36,7 +39,15 @@ export class CashSalesComponent {
   ngOnInit() {
     this.getAllProducts();
   }
+  ngAfterViewInit() {
+    this.focusBarcodeInput();
+  }
 
+  focusBarcodeInput() {
+    if (this.barcodeInput && this.barcodeInput.nativeElement) {
+      this.barcodeInput.nativeElement.focus();
+    }
+  }
   selectedProducts: Product[] = [];
   allProducts: Product[] = [];
   productTotals: number[] = []; // Initialize productTotals as an empty array
@@ -66,6 +77,45 @@ export class CashSalesComponent {
     });
   }
 
+  onBarcodeScanned(barcode: string) {
+    this.productService.searchProductByBarcode(barcode).subscribe(
+      (product: Product) => {
+        if (product) {
+          this.addToSelectedProducts(product);
+          this.clearBarcodeInput();
+          this.focusBarcodeInput(); // Add this line
+        } else {
+          console.log('Product not found');
+          // You can show an error message to the user here
+        }
+      },
+      (error) => {
+        console.error('Error searching for product:', error);
+        // Handle the error appropriately
+      }
+    );
+  }
+
+  clearBarcodeInput() {
+    if (this.barcodeInput && this.barcodeInput.nativeElement) {
+      this.barcodeInput.nativeElement.value = '';
+      this.barcodeInput.nativeElement.focus();
+    }
+  }
+
+  addToSelectedProducts(product: Product) {
+    const existingProduct = this.selectedProducts.find(
+      (p) => p.id === product.id
+    );
+    if (existingProduct) {
+      existingProduct.selectedProducts =
+        (existingProduct.selectedProducts || 0) + 1;
+    } else {
+      product.selectedProducts = 1;
+      this.selectedProducts.push(product);
+      this.productTotals.push(this.calculateSubtotal(product));
+    }
+  }
   onProductClick(product: Product): void {
     if (!this.selectedProducts.some((p) => p.id === product.id)) {
       product.selectedProducts = product.selectedProducts ?? 1; // Initialize to 1 if undefined
@@ -73,6 +123,31 @@ export class CashSalesComponent {
       this.productTotals.push(this.calculateSubtotal(product));
       console.log('Selected Products:', this.selectedProducts);
     }
+  }
+
+  sendMpesaStkPushRequest() {
+    if (!this.mpesaPaymentNumber) {
+      this.toast.error('Enter mpesa phone number ');
+      return;
+    }
+    this.sendingMpesaRequest = true;
+
+    const data = {
+      phoneNumber: this.mpesaPaymentNumber,
+      amount: 1,
+      accountReference: 'Test',
+      transactionDesc: 'Test STK Push',
+    };
+    this.salesService.mpesaStkPush(data).subscribe(
+      (data) => {
+        this.toast.success('Mpesa request sent Successfully');
+        this.sendingMpesaRequest = false;
+      },
+      (error) => {
+        this.toast.success('Error sending Mpesa Request');
+        this.sendingMpesaRequest = false;
+      }
+    );
   }
 
   addQuantity(product: Product): void {

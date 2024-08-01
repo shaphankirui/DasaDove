@@ -33,6 +33,10 @@ export class ProductService {
     const url = `${this.apiUrl}/${id}`;
     return this.http.get<Product>(url);
   }
+  searchProductByBarcode(barcode: string): Observable<Product> {
+    const url = `${this.apiUrl}/search/barcode?barcode=${barcode}`;
+    return this.http.get<Product>(url);
+  }
 
   updateProduct(id: number, data: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, data);

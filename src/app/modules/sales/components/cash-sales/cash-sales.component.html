@@ -36,6 +36,12 @@
         />
       </div>
     </form>
+    <input
+      #barcodeInput
+      (keydown.enter)="onBarcodeScanned(barcodeInput.value)"
+      placeholder="Scan barcode"
+      class="text-black"
+    />
 
     <div class="flex space-x-2">
       <button
@@ -355,6 +361,35 @@
 
       <div class="mt-6">
         <h3 class="text-lg font-semibold text-white mb-4">Payment Methods</h3>
+        <div class="flex flex-row justify-between">
+          <div>
+            <label
+              for="cash"
+              class="block mb-2 text-sm font-medium text-gray-300"
+              >Mpesa Number</label
+            >
+            <input
+              type="text"
+              id="mpesa"
+              [(ngModel)]="mpesaPaymentNumber"
+              class="w-full border text-sm rounded-lg block px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+              placeholder="Enter Mpesa Number"
+            />
+          </div>
+          <button
+            *ngIf="!sendingMpesaRequest"
+            (click)="sendMpesaStkPushRequest()"
+            class="text-white bg-blue-600 px-4 py-2"
+          >
+            Send Request
+          </button>
+          <button
+            *ngIf="sendingMpesaRequest"
+            class="text-white bg-blue-600 px-4 py-2 flex flex-row gap-2 justify-center items-center"
+          >
+            Sending Request <app-btn-loder></app-btn-loder>
+          </button>
+        </div>
         <div class="grid grid-cols-3 gap-4">
           <div>
             <label
