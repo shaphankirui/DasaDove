@@ -31,6 +31,8 @@ export class CashSalesComponent {
   posting: boolean = false;
   mpesaPaymentNumber: string = '';
   sendingMpesaRequest: boolean = false;
+  selectedPaymentMethod: 'cash' | 'mpesa' | 'bank' | null = null;
+
   constructor(
     private productService: ProductService,
     private salesService: SalesService,
@@ -134,7 +136,7 @@ export class CashSalesComponent {
 
     const data = {
       phoneNumber: this.mpesaPaymentNumber,
-      amount: 1,
+      amount: this.calculateTotal().toFixed(0),
       accountReference: 'Test',
       transactionDesc: 'Test STK Push',
     };
@@ -190,7 +192,7 @@ export class CashSalesComponent {
   }
 
   calculateTotal(): number {
-    return this.calculateSubtotalTotal() + this.calculateTax();
+    return this.calculateSubtotalTotal();
   }
 
   removeSelectedProduct(index: number): void {
@@ -199,6 +201,17 @@ export class CashSalesComponent {
       this.productTotals.splice(index, 1);
     } else {
       console.error('Invalid index for removing selected product');
+    }
+  }
+  payAll() {
+    if (this.selectedPaymentMethod == 'cash') {
+      this.paymentMethods.cash = this.calculateTotal();
+    }
+    if (this.selectedPaymentMethod == 'mpesa') {
+      this.paymentMethods.mpesa = this.calculateTotal();
+    }
+    if (this.selectedPaymentMethod == 'bank') {
+      this.paymentMethods.bank = this.calculateTotal();
     }
   }
   submitOrder() {

@@ -327,7 +327,7 @@
 
     <button (click)="submitOrder()">Submit Payment</button>
   </div> -->
-    <div class="p-1" *ngIf="showPayment">
+    <div class="p-1 w-[60%]" *ngIf="showPayment">
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-400">
           <thead class="text-xs uppercase bg-gray-700 text-gray-400">
@@ -337,21 +337,21 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="border-b bg-gray-800 border-gray-700">
+            <!-- <tr class="border-b bg-gray-800 border-gray-700">
               <td class="px-6 py-4 font-semibold text-white">Subtotal</td>
               <td class="px-6 py-4 font-semibold text-white">
                 Ksh. {{ calculateSubtotalTotal() | number : "1.2-2" }}
               </td>
-            </tr>
-            <tr class="border-b bg-gray-800 border-gray-700">
+            </tr> -->
+            <!-- <tr class="border-b bg-gray-800 border-gray-700">
               <td class="px-6 py-4 font-semibold text-white">Tax (16%)</td>
               <td class="px-6 py-4 font-semibold text-white">
                 Ksh. {{ calculateTax() | number : "1.2-2" }}
               </td>
-            </tr>
+            </tr> -->
             <tr class="border-b bg-gray-800 border-gray-700">
               <td class="px-6 py-4 font-semibold text-white">Total</td>
-              <td class="px-6 py-4 font-semibold text-white">
+              <td class="px-6 py-4 font-semibold text-white text-2xl">
                 Ksh. {{ calculateTotal() | number : "1.2-2" }}
               </td>
             </tr>
@@ -359,79 +359,142 @@
         </table>
       </div>
 
-      <div class="mt-6">
-        <h3 class="text-lg font-semibold text-white mb-4">Payment Methods</h3>
-        <div class="flex flex-row justify-between">
-          <div>
-            <label
-              for="cash"
-              class="block mb-2 text-sm font-medium text-gray-300"
-              >Mpesa Number</label
+      <div class="mt-6 bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold text-white mb-6">Payment Methods</h3>
+
+        <div class="mb-6">
+          <label class="block mb-2 text-sm font-medium text-gray-300"
+            >Select Payment Method</label
+          >
+          <div class="flex space-x-4">
+            <button
+              (click)="selectedPaymentMethod = 'cash'"
+              [ngClass]="{
+                'bg-blue-600': selectedPaymentMethod === 'cash',
+                'bg-gray-600': selectedPaymentMethod !== 'cash'
+              }"
+              class="px-4 py-2 text-white rounded transition-colors"
             >
-            <input
-              type="text"
-              id="mpesa"
-              [(ngModel)]="mpesaPaymentNumber"
-              class="w-full border text-sm rounded-lg block px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter Mpesa Number"
-            />
+              Cash
+            </button>
+            <button
+              (click)="selectedPaymentMethod = 'mpesa'"
+              [ngClass]="{
+                'bg-blue-600': selectedPaymentMethod === 'mpesa',
+                'bg-gray-600': selectedPaymentMethod !== 'mpesa'
+              }"
+              class="px-4 py-2 text-white rounded transition-colors"
+            >
+              M-Pesa
+            </button>
+            <button
+              (click)="selectedPaymentMethod = 'bank'"
+              [ngClass]="{
+                'bg-blue-600': selectedPaymentMethod === 'bank',
+                'bg-gray-600': selectedPaymentMethod !== 'bank'
+              }"
+              class="px-4 py-2 text-white rounded transition-colors"
+            >
+              Bank
+            </button>
           </div>
-          <button
-            *ngIf="!sendingMpesaRequest"
-            (click)="sendMpesaStkPushRequest()"
-            class="text-white bg-blue-600 px-4 py-2"
-          >
-            Send Request
-          </button>
-          <button
-            *ngIf="sendingMpesaRequest"
-            class="text-white bg-blue-600 px-4 py-2 flex flex-row gap-2 justify-center items-center"
-          >
-            Sending Request <app-btn-loder></app-btn-loder>
-          </button>
         </div>
-        <div class="grid grid-cols-3 gap-4">
-          <div>
-            <label
-              for="cash"
-              class="block mb-2 text-sm font-medium text-gray-300"
-              >Cash</label
-            >
-            <input
-              type="number"
-              id="cash"
-              [(ngModel)]="paymentMethods.cash"
-              class="w-full border text-sm rounded-lg block px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter cash amount"
-            />
+
+        <div [ngSwitch]="selectedPaymentMethod">
+          <div *ngSwitchCase="'cash'" class="space-y-4">
+            <div>
+              <label
+                for="cash"
+                class="block mb-2 text-sm font-medium text-gray-300"
+                >Cash Amount</label
+              >
+              <input
+                type="number"
+                id="cash"
+                [(ngModel)]="paymentMethods.cash"
+                class="w-full border text-sm rounded-lg block px-3 py-2 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter cash amount"
+              />
+            </div>
+            <div class="text-right">
+              <span class="text-lg font-semibold text-white"
+                >Total: Ksh. {{ calculateTotal() | number : "1.2-2" }}</span
+              >
+              <button
+                (click)="payAll()"
+                class="px-6 ml-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+              >
+                Pay All
+              </button>
+            </div>
           </div>
-          <div>
-            <label
-              for="mpesa"
-              class="block mb-2 text-sm font-medium text-gray-300"
-              >Mpesa</label
-            >
-            <input
-              type="number"
-              id="mpesa"
-              [(ngModel)]="paymentMethods.mpesa"
-              class="w-full border text-sm rounded-lg block px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter Mpesa amount"
-            />
+
+          <div *ngSwitchCase="'mpesa'" class="space-y-4">
+            <div>
+              <label
+                for="mpesaNumber"
+                class="block mb-2 text-sm font-medium text-gray-300"
+                >M-Pesa Number</label
+              >
+              <input
+                type="text"
+                id="mpesaNumber"
+                [(ngModel)]="mpesaPaymentNumber"
+                class="w-full border text-sm rounded-lg block px-3 py-2 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter M-Pesa Number"
+              />
+            </div>
+            <div class="flex flex-row justify-between items-center">
+              <div>
+                <span class="text-lg font-semibold text-white"
+                  >Total: Ksh. {{ calculateTotal() | number : "1.2-2" }}</span
+                >
+              </div>
+              <div class="flex justify-end">
+                <button
+                  *ngIf="!sendingMpesaRequest"
+                  (click)="sendMpesaStkPushRequest()"
+                  class="px-6 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                >
+                  Send STK Push
+                </button>
+                <button
+                  *ngIf="sendingMpesaRequest"
+                  class="px-6 py-2 bg-green-600 text-white rounded flex items-center justify-center"
+                >
+                  <span class="mr-2">Sending Request</span>
+                  <app-btn-loder></app-btn-loder>
+                </button>
+              </div>
+            </div>
           </div>
-          <div>
-            <label
-              for="bank"
-              class="block mb-2 text-sm font-medium text-gray-300"
-              >Bank</label
-            >
-            <input
-              type="number"
-              id="bank"
-              [(ngModel)]="paymentMethods.bank"
-              class="w-full border text-sm rounded-lg block px-2.5 py-1 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter bank amount"
-            />
+
+          <div *ngSwitchCase="'bank'" class="space-y-4">
+            <div>
+              <label
+                for="bank"
+                class="block mb-2 text-sm font-medium text-gray-300"
+                >Bank Amount</label
+              >
+              <input
+                type="number"
+                id="bank"
+                [(ngModel)]="paymentMethods.bank"
+                class="w-full border text-sm rounded-lg block px-3 py-2 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Enter bank amount"
+              />
+            </div>
+            <div class="text-right">
+              <span class="text-lg font-semibold text-white"
+                >Total: Ksh. {{ calculateTotal() | number : "1.2-2" }}</span
+              >
+              <button
+                (click)="payAll()"
+                class="px-6 ml-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+              >
+                Pay All
+              </button>
+            </div>
           </div>
         </div>
       </div>
